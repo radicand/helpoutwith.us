@@ -50,3 +50,7 @@ Beta 3
 - [ ] Web push notifications
 - [ ] Calendar view
 - [ ] Add rolling spot deletion for > 1 year
+
+Nice to have
+
+- [ ] More granular hot reloading (current just reloads page)
