@@ -1,0 +1,5 @@
+mutation deleteSpot($id: ID!) {
+  deleteSpot(id: $id) {
+    id
+  }
+}

@@ -1,0 +1,9 @@
+mutation updateSpot($id: ID!, $numberNeeded: Int!, $startsAt: DateTime!, $endsAt: DateTime!, $location: String) {
+  updateSpot(id: $id, numberNeeded: $numberNeeded, startsAt: $startsAt, endsAt: $endsAt, location: $location) {
+    id
+    startsAt
+    endsAt
+    location
+    numberNeeded
+  }
+}

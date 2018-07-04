@@ -1,0 +1,8 @@
+mutation addOrgUserRole($organizationId: ID!, $email: String!, $role: String!) {
+  addOrgUserRole(role: $role, organizationId: $organizationId, email: $email) {
+    userId
+    organizationId
+    role
+    organizationUserRoleId
+  }
+}

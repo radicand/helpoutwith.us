@@ -1,0 +1,10 @@
+mutation updateOrganization($id: ID!, $name: String!, $timezone: String!, $description: String, $location: String, $link: String) {
+  updateOrganization(id: $id, name: $name, timezone: $timezone, description: $description, location: $location, link: $link) {
+    id
+    name
+    timezone
+    description
+    location
+    link
+  }
+}

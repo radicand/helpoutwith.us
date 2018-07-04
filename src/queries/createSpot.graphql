@@ -1,0 +1,43 @@
+mutation createSpot(
+  $numberNeeded: Int!
+  $startsAt: DateTime!
+  $endsAt: DateTime!
+  $location: String
+  $activityId: ID!
+) {
+  createSpot(
+    numberNeeded: $numberNeeded
+    startsAt: $startsAt
+    endsAt: $endsAt
+    location: $location
+    activityId: $activityId
+  ) {
+    id
+    startsAt
+    endsAt
+    location
+    members {
+      id
+      user {
+        id
+      }
+      status
+    }
+    numberNeeded
+    activity {
+      id
+      name
+      location
+      organization {
+        name
+        id
+      }
+      members {
+        role
+        user {
+          id
+        }
+      }
+    }
+  }
+}

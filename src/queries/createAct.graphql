@@ -1,0 +1,9 @@
+mutation createAct($name: String!, $description: String, $location: String, $organizationId: ID!) {
+  createAct(name: $name, description: $description, location: $location, organizationId: $organizationId) {
+    id
+    name
+    description
+    location
+    initialAdminMemberId
+  }
+}

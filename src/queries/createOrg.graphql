@@ -1,0 +1,11 @@
+mutation createOrg($name: String!, $timezone: String!, $description: String, $location: String, $link: String) {
+  createOrg(name: $name, timezone: $timezone, description: $description, location: $location, link: $link) {
+    id
+    name
+    timezone
+    description
+    location
+    link
+    initialAdminMemberId
+  }
+}

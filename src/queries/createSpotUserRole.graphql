@@ -1,0 +1,9 @@
+mutation createSpotUserRole($status: SpotStatus!, $userId: ID!, $spotId: ID!) {
+  createSpotUserRole(status: $status, userId: $userId, spotId: $spotId) {
+    id
+    status
+    user {
+      id
+    }
+  }
+}

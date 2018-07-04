@@ -1,0 +1,25 @@
+{
+  "docs": "https://www.typescriptlang.org/docs/handbook/compiler-options.html",
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "jsx": "react",
+    "removeComments": false,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": false,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "lib": [ "dom", "es2016", "esnext.asynciterable" ],
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "pretty": true,
+    "strict": true
+  },
+  "include": [ "src/**/*" ],
+  "exclude": [ "node_modules" ]
+}

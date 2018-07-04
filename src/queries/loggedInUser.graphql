@@ -1,0 +1,8 @@
+query loggedInUser {
+  loggedInUser {
+    id
+    name
+    email
+    photoLink
+  }
+}

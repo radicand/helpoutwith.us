@@ -1,0 +1,5 @@
+mutation deleteActivityUserRole($id: ID!) {
+  deleteActivityUserRole(id: $id) {
+    id
+  }
+}

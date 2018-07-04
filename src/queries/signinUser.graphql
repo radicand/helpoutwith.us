@@ -1,0 +1,6 @@
+mutation SigninUser($id_token: String!) {
+  authenticateGoogleUser(googleToken: $id_token) {
+    id
+    token
+  }
+}

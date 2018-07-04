@@ -1,0 +1,5 @@
+mutation deleteOrganizationUserRole($id: ID!) {
+  deleteOrganizationUserRole(id: $id) {
+    id
+  }
+}

@@ -1,0 +1,5 @@
+mutation deleteSpotUserRole($id: ID!) {
+  deleteSpotUserRole(id: $id) {
+    id
+  }
+}

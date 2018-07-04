@@ -1,0 +1,65 @@
+query myData($user_id: ID) {
+  allOrganizations(filter: { members_some: { user: { id: $user_id } } }, orderBy: name_ASC) {
+    id
+    name
+    timezone
+    description
+    location
+    bannerImage {
+      url
+    }
+    link
+    members {
+      id
+      role
+      user {
+        id
+        name
+        email
+        photoLink
+      }
+    }
+    activities(filter: { members_some: { user: { id: $user_id } } }, orderBy: name_ASC) {
+      id
+      name
+      description
+      location
+      organization {
+        id
+      }
+      members {
+        id
+        role
+        user {
+          id
+          name
+          email
+          photoLink
+        }
+      }
+      spots(orderBy: startsAt_ASC) {
+        id
+        startsAt
+        endsAt
+        location
+        activity {
+          id
+          organization {
+            id
+          }
+        }
+        members {
+          id
+          user {
+            id
+            name
+            email
+            photoLink
+          }
+          status
+        }
+        numberNeeded
+      }
+    }
+  }
+}

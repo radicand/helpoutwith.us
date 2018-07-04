@@ -1,0 +1,13 @@
+node_modules
+npm-debug.log
+.DS_Store
+dist
+*.swp
+.yarnclean
+yarn-error.log
+.idea
+.envrc
+.cache
+.fusebox
+src/queries/schema.json
+src/queries/schema.ts

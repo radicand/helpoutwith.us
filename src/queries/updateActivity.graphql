@@ -1,0 +1,8 @@
+mutation updateActivity($id: ID!, $name: String!, $description: String, $location: String) {
+  updateActivity(id: $id, name: $name, description: $description, location: $location) {
+    id
+    name
+    description
+    location
+  }
+}
