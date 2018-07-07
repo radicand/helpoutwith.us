@@ -33,7 +33,7 @@ Beta 2
 - [x] Fix automatic login setState issue on Landing
 - [x] Fix sign in when you started from the home page
 - [x] Publish to Github
-- [ ] Email notification on unfilled Spot 3 days out
+- [x] Email notification on unfilled Spot 3 days out
 - [ ] Email notification on activity summary to admins
 - [ ] Signup other members for a spot administratively
 - [ ] Success/error toaster on adding people to an org

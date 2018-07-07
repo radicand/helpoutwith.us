@@ -10,11 +10,21 @@ class NotificationsController implements IController {
       path: '/notifications/mySpots',
       handler: async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
         try {
-          const apolloClient = ApolloService.createClient(request.headers.authorization);
+          const apolloClient = ApolloService.createClient(
+            request.headers.authorization,
+          );
           const resp = await apolloClient.mutate({
             mutation: gql`
-              mutation sendUpcomingReminders($daysOut: Int!, $filled: Boolean!, $unfilled: Boolean!) {
-                sendUpcomingReminders(daysOut: $daysOut, filled: $filled, unfilled: $unfilled) {
+              mutation sendUpcomingReminders(
+                $daysOut: Int!
+                $filled: Boolean!
+                $unfilled: Boolean!
+              ) {
+                sendUpcomingReminders(
+                  daysOut: $daysOut
+                  filled: $filled
+                  unfilled: $unfilled
+                ) {
                   notificationsSent
                   errors
                 }
@@ -23,15 +33,25 @@ class NotificationsController implements IController {
             variables: {
               daysOut: 3,
               filled: true,
-              unfilled: false,
+              unfilled: true,
             },
           });
 
-          request.log([ 'notifications' ], `${resp.data.sendUpcomingReminders.notificationsSent} notifications sent`);
+          request.log(
+            ['notifications'],
+            `${
+              resp.data.sendUpcomingReminders.notificationsSent
+            } notifications sent`,
+          );
 
-          return h.response(JSON.stringify({ ok: true, sent: resp.data.sendUpcomingReminders.notificationsSent }));
+          return h.response(
+            JSON.stringify({
+              ok: true,
+              sent: resp.data.sendUpcomingReminders.notificationsSent,
+            }),
+          );
         } catch (ex) {
-          request.log([ 'notifications', 'error' ], ex.message);
+          request.log(['notifications', 'error'], ex.message);
 
           return h.response(new Error(ex.message));
         }
