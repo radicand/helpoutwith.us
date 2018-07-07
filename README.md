@@ -13,7 +13,7 @@ A modern webapp to help manage signups and volunteering for groups and organizat
 > Found this useful? give it a :star:
 
 ## get started
-1. Check out the graph.cool database schema here: xxx and follow the instructions regarding setting up the .envrc file properly before publishing the schema.
+1. Check out the graph.cool database schema here: [https://github.com/radicand/helpoutwith.us-gcf](https://github.com/radicand/helpoutwith.us-gcf) and follow the instructions regarding setting up the .envrc file properly before publishing the schema.
 2. Create a new graph.cool project, and publish the schema there.
 3. Create an .envrc file from the provided .envrc.example, and fill in your graph.cool URL, your graph.cool notification root token (from `gcf root-token notifications`), and a Google OAuth Client ID (https://support.google.com/cloud/answer/6158849?hl=en).
 4. Install direnv and configure it in your bash (https://github.com/direnv/direnv) - be sure to follow the Setup portion where you add the line to your bashrc.
