@@ -158,10 +158,6 @@ class WhatsOpen extends React.Component<IProps, IState> {
 
                         const spots: ModfifiedSpot[] = [];
 
-                        spots.sort((a, b) => {
-                          return a.startsAt > b.startsAt ? 1 : -1;
-                        });
-
                         allOrganizations.forEach((org) =>
                           org.activities.forEach((activity) =>
                             activity.spots.forEach((spot) => {
@@ -190,6 +186,10 @@ class WhatsOpen extends React.Component<IProps, IState> {
                             }),
                           ),
                         );
+
+                        spots.sort((a, b) => {
+                          return a.startsAt > b.startsAt ? 1 : -1;
+                        });
 
                         return spots.map((spot) => {
                           const availableSpots =

@@ -34,6 +34,7 @@ Beta 2
 - [x] Fix sign in when you started from the home page
 - [x] Publish to Github
 - [x] Email notification on unfilled Spot 3 days out
+- [x] Sort WhatsOpen page by date, not by activity then date
 - [ ] Email notification on activity summary to admins
 - [ ] Signup other members for a spot administratively
 - [ ] Success/error toaster on adding people to an org
