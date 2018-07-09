@@ -3,6 +3,7 @@ import Cookies from 'universal-cookie';
 const cookieOpts = {
   secure: false, // setting true won't allow us to read the cookie for user id
   path: '/',
+  maxAge: 3600 * 24 * 30, // 1 month
 };
 
 export function login(variables: { token: string; id: string }) {

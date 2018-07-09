@@ -35,6 +35,7 @@ Beta 2
 - [x] Publish to Github
 - [x] Email notification on unfilled Spot 3 days out
 - [x] Sort WhatsOpen page by date, not by activity then date
+- [x] Extend cookie timeout to 1 month
 - [ ] Email notification on activity summary to admins
 - [ ] Signup other members for a spot administratively
 - [ ] Success/error toaster on adding people to an org
