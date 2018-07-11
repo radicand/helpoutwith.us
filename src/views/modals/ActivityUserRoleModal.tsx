@@ -1,20 +1,17 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  FormControl,
-  Input,
-  InputLabel,
-  MenuItem,
-  Select,
-  withMobileDialog,
-  WithStyles,
-} from '@material-ui/core';
-import { Theme } from '@material-ui/core/styles/createMuiTheme';
-import withStyles from '@material-ui/core/styles/withStyles';
+import Button from '@material-ui/core/es/Button';
+import Dialog from '@material-ui/core/es/Dialog';
+import DialogActions from '@material-ui/core/es/DialogActions';
+import DialogContent from '@material-ui/core/es/DialogContent';
+import DialogContentText from '@material-ui/core/es/DialogContentText';
+import DialogTitle from '@material-ui/core/es/DialogTitle';
+import FormControl from '@material-ui/core/es/FormControl';
+import Input from '@material-ui/core/es/Input';
+import InputLabel from '@material-ui/core/es/InputLabel';
+import MenuItem from '@material-ui/core/es/MenuItem';
+import Select from '@material-ui/core/es/Select';
+import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
+import withStyles, { WithStyles } from '@material-ui/core/es/styles/withStyles';
+import withMobileDialog from '@material-ui/core/es/withMobileDialog';
 import * as React from 'react';
 import { compose } from 'react-apollo';
 import { CreateActivityUserRoleMutation } from '../../queries';

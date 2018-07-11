@@ -1,19 +1,20 @@
-import {
-  AppBar,
-  Avatar,
-  Divider,
-  Grid,
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  SwipeableDrawer,
-  Toolbar,
-  Typography,
+import AppBar from '@material-ui/core/es/AppBar';
+import Avatar from '@material-ui/core/es/Avatar';
+import Divider from '@material-ui/core/es/Divider';
+import Grid from '@material-ui/core/es/Grid';
+import IconButton from '@material-ui/core/es/IconButton';
+import List from '@material-ui/core/es/List';
+import ListItem from '@material-ui/core/es/ListItem';
+import ListItemIcon from '@material-ui/core/es/ListItemIcon';
+import ListItemText from '@material-ui/core/es/ListItemText';
+import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
+import withStyles, {
+  StyleRules,
   WithStyles,
-} from '@material-ui/core';
-import { StyleRules, Theme, withStyles } from '@material-ui/core/styles';
+} from '@material-ui/core/es/styles/withStyles';
+import SwipeableDrawer from '@material-ui/core/es/SwipeableDrawer';
+import Toolbar from '@material-ui/core/es/Toolbar';
+import Typography from '@material-ui/core/es/Typography';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';

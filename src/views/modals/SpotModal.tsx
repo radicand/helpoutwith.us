@@ -1,27 +1,24 @@
-import {
-  Button,
-  Checkbox,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Divider,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  Icon,
-  Input,
-  InputLabel,
-  MenuItem,
-  Select,
-  Switch,
-  TextField,
-  withMobileDialog,
-  WithStyles,
-  withStyles,
-} from '@material-ui/core';
-import { Theme } from '@material-ui/core/styles/createMuiTheme';
+import Button from '@material-ui/core/es/Button';
+import Checkbox from '@material-ui/core/es/Checkbox';
+import Dialog from '@material-ui/core/es/Dialog';
+import DialogActions from '@material-ui/core/es/DialogActions';
+import DialogContent from '@material-ui/core/es/DialogContent';
+import DialogContentText from '@material-ui/core/es/DialogContentText';
+import DialogTitle from '@material-ui/core/es/DialogTitle';
+import Divider from '@material-ui/core/es/Divider';
+import FormControl from '@material-ui/core/es/FormControl';
+import FormControlLabel from '@material-ui/core/es/FormControlLabel';
+import FormGroup from '@material-ui/core/es/FormGroup';
+import Icon from '@material-ui/core/es/Icon';
+import Input from '@material-ui/core/es/Input';
+import InputLabel from '@material-ui/core/es/InputLabel';
+import MenuItem from '@material-ui/core/es/MenuItem';
+import Select from '@material-ui/core/es/Select';
+import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
+import withStyles, { WithStyles } from '@material-ui/core/es/styles/withStyles';
+import Switch from '@material-ui/core/es/Switch';
+import TextField from '@material-ui/core/es/TextField';
+import withMobileDialog from '@material-ui/core/es/withMobileDialog';
 import { flatten } from '@typed/list';
 import * as luxon from 'luxon';
 import { DatePicker, DateTimePicker } from 'material-ui-pickers';
@@ -30,7 +27,11 @@ import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsPr
 import * as React from 'react';
 import { compose } from 'react-apollo';
 import { ReactCookieProps, withCookies } from 'react-cookie';
-import { CreateSpotMutation, MyDataQuery, UpdateSpotMutation } from '../../queries';
+import {
+  CreateSpotMutation,
+  MyDataQuery,
+  UpdateSpotMutation,
+} from '../../queries';
 import LoadingComponent from '../components/LoadingComponent';
 
 const styles = (theme: Theme) => ({
@@ -93,12 +94,10 @@ class SpotModal extends React.Component<IProps, IState> {
         id: props.spot.id,
         numberNeeded: props.spot.numberNeeded,
         location: props.spot.location,
-        startsAt: luxon.DateTime
-          .fromISO(props.spot.startsAt)
+        startsAt: luxon.DateTime.fromISO(props.spot.startsAt)
           .setZone(props.timezone, { keepLocalTime: false })
           .setZone('local', { keepLocalTime: true }),
-        endsAt: luxon.DateTime
-          .fromISO(props.spot.endsAt)
+        endsAt: luxon.DateTime.fromISO(props.spot.endsAt)
           .setZone(props.timezone, { keepLocalTime: false })
           .setZone('local', { keepLocalTime: true }),
         activityData: {
@@ -115,7 +114,9 @@ class SpotModal extends React.Component<IProps, IState> {
         },
         numberNeeded: '1',
         startsAt: luxon.DateTime.local().startOf('hour'),
-        endsAt: luxon.DateTime.local().startOf('hour').plus({ hours: 1 }),
+        endsAt: luxon.DateTime.local()
+          .startOf('hour')
+          .plus({ hours: 1 }),
         repeat: '',
         repeatUntil: luxon.DateTime.local(),
         repeatSunday: '',
@@ -171,7 +172,9 @@ class SpotModal extends React.Component<IProps, IState> {
                                     (activity) =>
                                       activity.members.filter(
                                         (member) =>
-                                          member.user.id === this.props.cookies.get('id') && member.role === 'Admin',
+                                          member.user.id ===
+                                            this.props.cookies.get('id') &&
+                                          member.role === 'Admin',
                                       ).length !== 0,
                                   )
                                   .map((activity) => (
@@ -367,14 +370,20 @@ class SpotModal extends React.Component<IProps, IState> {
             </form>
           </DialogContent>
           <DialogActions>
-            <Button size="small" color="primary" onClick={this.props.handleClose}>
+            <Button
+              size="small"
+              color="primary"
+              onClick={this.props.handleClose}
+            >
               Cancel
             </Button>
             <CreateSpotMutation>
               {(createSpot) => (
                 <UpdateSpotMutation>
                   {(updateSpot) => {
-                    const _onClickAccept = (event: React.MouseEvent<HTMLButtonElement>): void => {
+                    const _onClickAccept = (
+                      event: React.MouseEvent<HTMLButtonElement>,
+                    ): void => {
                       event.preventDefault();
 
                       let numberNeeded: number;
@@ -387,10 +396,14 @@ class SpotModal extends React.Component<IProps, IState> {
 
                       const { repeatUntil } = this.state;
                       const adjustedStartsAt = this.state.startsAt
-                        .setZone(this.state.activityData.timezone, { keepLocalTime: true })
+                        .setZone(this.state.activityData.timezone, {
+                          keepLocalTime: true,
+                        })
                         .setZone('utc');
                       const adjustedEndsAt = this.state.endsAt
-                        .setZone(this.state.activityData.timezone, { keepLocalTime: true })
+                        .setZone(this.state.activityData.timezone, {
+                          keepLocalTime: true,
+                        })
                         .setZone('utc');
 
                       if (this.props.spot) {
@@ -426,12 +439,14 @@ class SpotModal extends React.Component<IProps, IState> {
                           Saturday: this.state.repeatSaturday,
                         };
 
-                        const duration = luxon.Interval
-                          .fromDateTimes(adjustedStartsAt, adjustedEndsAt)
-                          .length('seconds');
-                        const range = luxon.Interval
-                          .fromDateTimes(adjustedStartsAt, repeatUntil)
-                          .splitBy(luxon.Duration.fromObject({ days: 1 }));
+                        const duration = luxon.Interval.fromDateTimes(
+                          adjustedStartsAt,
+                          adjustedEndsAt,
+                        ).length('seconds');
+                        const range = luxon.Interval.fromDateTimes(
+                          adjustedStartsAt,
+                          repeatUntil,
+                        ).splitBy(luxon.Duration.fromObject({ days: 1 }));
 
                         range.forEach((interval) => {
                           const baseDate = interval.end.set({
@@ -444,7 +459,9 @@ class SpotModal extends React.Component<IProps, IState> {
                               numberNeeded,
                               // the extra setZone is to work around a luxon bug? with the last datetime object
                               // in the range having a local tz and not the UTC one we told it
-                              startsAt: baseDate.setZone('utc', { keepLocalTime: true }).toISO(),
+                              startsAt: baseDate
+                                .setZone('utc', { keepLocalTime: true })
+                                .toISO(),
                               endsAt: baseDate
                                 .plus({ seconds: duration })
                                 .setZone('utc', { keepLocalTime: true })
@@ -463,7 +480,11 @@ class SpotModal extends React.Component<IProps, IState> {
                     };
 
                     return (
-                      <Button size="small" color="primary" onClick={_onClickAccept}>
+                      <Button
+                        size="small"
+                        color="primary"
+                        onClick={_onClickAccept}
+                      >
                         {this.props.spot ? 'Update' : 'Create'}
                       </Button>
                     );
@@ -477,13 +498,22 @@ class SpotModal extends React.Component<IProps, IState> {
     );
   }
 
-  private handleChange = (name: string) => (event: React.ChangeEvent<HTMLInputElement>): void => {
+  private handleChange = (name: string) => (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
     this.setState({
-      [name]: event.target.type === 'checkbox' ? (event.target.checked ? event.target.value : '') : event.target.value,
+      [name]:
+        event.target.type === 'checkbox'
+          ? event.target.checked
+            ? event.target.value
+            : ''
+          : event.target.value,
     });
   };
 
-  private handleActivityChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
+  private handleActivityChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ): void => {
     this.setState({
       activityData: JSON.parse(event.target.value),
     });
@@ -504,7 +534,10 @@ class SpotModal extends React.Component<IProps, IState> {
       newState.repeatUntil = this.state.endsAt; // maybe throw error too?
     }
 
-    if (name !== 'repeatUntil' && (newState.startsAt || this.state.startsAt) > this.state.repeatUntil) {
+    if (
+      name !== 'repeatUntil' &&
+      (newState.startsAt || this.state.startsAt) > this.state.repeatUntil
+    ) {
       newState.repeatUntil = newState.startsAt || this.state.startsAt;
     }
 
@@ -512,4 +545,8 @@ class SpotModal extends React.Component<IProps, IState> {
   };
 }
 
-export default compose(withCookies, withStyles(styles, { withTheme: true }), withMobileDialog<IProps>())(SpotModal);
+export default compose(
+  withCookies,
+  withStyles(styles, { withTheme: true }),
+  withMobileDialog<IProps>(),
+)(SpotModal);

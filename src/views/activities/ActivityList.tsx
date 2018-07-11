@@ -1,13 +1,14 @@
-import {
-  ExpansionPanel,
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
-  Typography,
+import Button from '@material-ui/core/es/Button';
+import ExpansionPanel from '@material-ui/core/es/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/es/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/es/ExpansionPanelSummary';
+import Grid from '@material-ui/core/es/Grid';
+import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
+import withStyles, {
+  StyleRules,
   WithStyles,
-} from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import { StyleRules, Theme, withStyles } from '@material-ui/core/styles';
+} from '@material-ui/core/es/styles/withStyles';
+import Typography from '@material-ui/core/es/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';

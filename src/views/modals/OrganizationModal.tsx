@@ -1,16 +1,13 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  TextField,
-  withMobileDialog,
-  WithStyles,
-  withStyles,
-} from '@material-ui/core';
-import { Theme } from '@material-ui/core/styles/createMuiTheme';
+import Button from '@material-ui/core/es/Button';
+import Dialog from '@material-ui/core/es/Dialog';
+import DialogActions from '@material-ui/core/es/DialogActions';
+import DialogContent from '@material-ui/core/es/DialogContent';
+import DialogContentText from '@material-ui/core/es/DialogContentText';
+import DialogTitle from '@material-ui/core/es/DialogTitle';
+import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
+import withStyles, { WithStyles } from '@material-ui/core/es/styles/withStyles';
+import TextField from '@material-ui/core/es/TextField';
+import withMobileDialog from '@material-ui/core/es/withMobileDialog';
 import * as luxon from 'luxon';
 import * as React from 'react';
 import { compose } from 'react-apollo';

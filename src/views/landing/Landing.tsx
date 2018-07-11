@@ -1,12 +1,12 @@
-import {
-  Grid,
-  IconButton,
-  Snackbar,
-  Typography,
-  withStyles,
+import Grid from '@material-ui/core/es/Grid';
+import IconButton from '@material-ui/core/es/IconButton';
+import Snackbar from '@material-ui/core/es/Snackbar';
+import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
+import withStyles, {
+  StyleRules,
   WithStyles,
-} from '@material-ui/core';
-import { StyleRules, Theme } from '@material-ui/core/styles';
+} from '@material-ui/core/es/styles/withStyles';
+import Typography from '@material-ui/core/es/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import { memoize } from '@typed/functions';
 import * as React from 'react';

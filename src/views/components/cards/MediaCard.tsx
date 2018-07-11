@@ -1,5 +1,15 @@
-import { Avatar, Button, Card, CardActions, CardContent, CardHeader, CardMedia, IconButton, Paper, Typography } from '@material-ui/core';
-import { StyleRules, Theme, withStyles } from '@material-ui/core/styles';
+import Avatar from '@material-ui/core/es/Avatar';
+import Button from '@material-ui/core/es/Button';
+import Card from '@material-ui/core/es/Card';
+import CardActions from '@material-ui/core/es/CardActions';
+import CardContent from '@material-ui/core/es/CardContent';
+import CardHeader from '@material-ui/core/es/CardHeader';
+import CardMedia from '@material-ui/core/es/CardMedia';
+import IconButton from '@material-ui/core/es/IconButton';
+import Paper from '@material-ui/core/es/Paper';
+import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
+import withStyles, { StyleRules } from '@material-ui/core/es/styles/withStyles';
+import Typography from '@material-ui/core/es/Typography';
 import classnamer from 'classnamer';
 import * as React from 'react';
 import { myData } from '../../../queries/schema';
@@ -52,10 +62,13 @@ const decorate = withStyles((theme: Theme) => {
       margin: theme.spacing.unit,
       color: '#fff',
       backgroundColor: theme.palette.secondary.light,
-      transition: theme.transitions.create([ 'height', 'width', 'marginBottom' ], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
+      transition: theme.transitions.create(
+        ['height', 'width', 'marginBottom'],
+        {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.enteringScreen,
+        },
+      ),
     },
     absent: {
       backgroundColor: 'rgba(255,0,0,.075)',
@@ -72,9 +85,7 @@ const decorate = withStyles((theme: Theme) => {
   return myStyles;
 });
 
-const MediaCard = decorate<
-  IMediaCardProps
->(
+const MediaCard = decorate<IMediaCardProps>(
   ({
     className,
     classes,
@@ -94,7 +105,13 @@ const MediaCard = decorate<
     <div>
       <Card className={classnamer(classes.card, className)}>
         {title && <CardHeader title={title} subheader={subheader} />}
-        {imageLink && <CardMedia className={classes.media} image={imageLink} title={imageTitle} />}
+        {imageLink && (
+          <CardMedia
+            className={classes.media}
+            image={imageLink}
+            title={imageTitle}
+          />
+        )}
         <CardContent>
           {preheader && (
             <Typography className={classes.preheader} color="textSecondary">
@@ -124,23 +141,24 @@ const MediaCard = decorate<
                 </Avatar>
               ))}
               {absentMembers &&
-              absentMembers.length > 0 && (
-                <Paper className={classes.absent}>
-                  <Typography variant="subheading">Not Available</Typography>
-                  {absentMembers.map((member) => (
-                    <Avatar
-                      key={member.id}
-                      aria-label={member.user.name}
-                      title={member.user.name}
-                      alt={getInitials(member.user.name)}
-                      src={member.user.photoLink}
-                      className={classes.avatar}
-                    >
-                      {!member.user.photoLink && getInitials(member.user.name)}
-                    </Avatar>
-                  ))}
-                </Paper>
-              )}
+                absentMembers.length > 0 && (
+                  <Paper className={classes.absent}>
+                    <Typography variant="subheading">Not Available</Typography>
+                    {absentMembers.map((member) => (
+                      <Avatar
+                        key={member.id}
+                        aria-label={member.user.name}
+                        title={member.user.name}
+                        alt={getInitials(member.user.name)}
+                        src={member.user.photoLink}
+                        className={classes.avatar}
+                      >
+                        {!member.user.photoLink &&
+                          getInitials(member.user.name)}
+                      </Avatar>
+                    ))}
+                  </Paper>
+                )}
             </div>
           )}
         </CardContent>
@@ -154,7 +172,12 @@ const MediaCard = decorate<
               ))}
             {buttons &&
               buttons.map(({ text, onClick }, index) => (
-                <Button key={index} size="small" color="primary" onClick={onClick}>
+                <Button
+                  key={index}
+                  size="small"
+                  color="primary"
+                  onClick={onClick}
+                >
                   {text}
                 </Button>
               ))}

@@ -1,19 +1,19 @@
-import {
-  Button,
-  ExpansionPanel,
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
-  FormControlLabel,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  Switch,
-  Typography,
-  withStyles,
+import Button from '@material-ui/core/es/Button';
+import ExpansionPanel from '@material-ui/core/es/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/es/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/es/ExpansionPanelSummary';
+import FormControlLabel from '@material-ui/core/es/FormControlLabel';
+import Grid from '@material-ui/core/es/Grid';
+import List from '@material-ui/core/es/List';
+import ListItem from '@material-ui/core/es/ListItem';
+import ListItemText from '@material-ui/core/es/ListItemText';
+import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
+import withStyles, {
+  StyleRules,
   WithStyles,
-} from '@material-ui/core';
-import { StyleRules, Theme } from '@material-ui/core/styles';
+} from '@material-ui/core/es/styles/withStyles';
+import Switch from '@material-ui/core/es/Switch';
+import Typography from '@material-ui/core/es/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import DeleteIcon from '@material-ui/icons/Delete';

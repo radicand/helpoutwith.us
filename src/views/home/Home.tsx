@@ -1,16 +1,14 @@
-import {
-  Collapse,
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemSecondaryAction,
-  ListItemText,
-  ListSubheader,
-  Typography,
-  WithStyles,
-} from '@material-ui/core';
-import { Theme, withStyles } from '@material-ui/core/styles';
+import Collapse from '@material-ui/core/es/Collapse';
+import IconButton from '@material-ui/core/es/IconButton';
+import List from '@material-ui/core/es/List';
+import ListItem from '@material-ui/core/es/ListItem';
+import ListItemIcon from '@material-ui/core/es/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/es/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/es/ListItemText';
+import ListSubheader from '@material-ui/core/es/ListSubheader';
+import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
+import withStyles, { WithStyles } from '@material-ui/core/es/styles/withStyles';
+import Typography from '@material-ui/core/es/Typography';
 import CancelIcon from '@material-ui/icons/Cancel';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import ExpandLess from '@material-ui/icons/ExpandLess';

@@ -1,5 +1,5 @@
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { MuiThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/es/CssBaseline';
+import MuiThemeProvider from '@material-ui/core/es/styles/MuiThemeProvider';
 import { ApolloClient } from 'apollo-client';
 import * as React from 'react';
 import { ApolloProvider } from 'react-apollo';

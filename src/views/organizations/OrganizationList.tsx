@@ -1,12 +1,11 @@
-import {
-  Button,
-  Grid,
-  Theme,
-  Typography,
-  withStyles,
+import Button from '@material-ui/core/es/Button';
+import Grid from '@material-ui/core/es/Grid';
+import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
+import withStyles, {
+  StyleRules,
   WithStyles,
-} from '@material-ui/core';
-import { StyleRules } from '@material-ui/core/styles';
+} from '@material-ui/core/es/styles/withStyles';
+import Typography from '@material-ui/core/es/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ModeEditIcon from '@material-ui/icons/ModeEdit';

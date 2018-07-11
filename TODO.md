@@ -55,4 +55,5 @@ Beta 3
 
 Nice to have
 
+- [ ] Reduce bundle size
 - [ ] More granular hot reloading (current just reloads page)

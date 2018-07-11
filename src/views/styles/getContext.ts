@@ -1,5 +1,6 @@
+import createMuiTheme from '@material-ui/core/es/styles/createMuiTheme';
+import jssPreset from '@material-ui/core/es/styles/jssPreset';
 import { create } from 'jss';
-import { createMuiTheme, jssPreset } from '@material-ui/core/styles';
 import { SheetsRegistry } from 'react-jss/lib/jss';
 
 const theme = createMuiTheme({
