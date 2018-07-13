@@ -1,11 +1,18 @@
 const fs = require('fs-extra');
-const { EnvPlugin, FuseBox, QuantumPlugin, WebIndexPlugin, JSONPlugin } = require('fuse-box');
+const {
+  EnvPlugin,
+  FuseBox,
+  QuantumPlugin,
+  WebIndexPlugin,
+  JSONPlugin,
+} = require('fuse-box');
 const GraphQLPlugin = require('fuse-box-graphql-plugin');
 const path = require('path');
 const FBT = require('fuse-box-typechecker');
 
 const { GOOGLE_CLIENT_ID, GC_URL } = process.env;
-const isProduction = process.env.NODE_ENV === 'production' || process.argv[2] === 'dist';
+const isProduction =
+  process.env.NODE_ENV === 'production' || process.argv[2] === 'dist';
 
 // copy assets
 fs.copySync('./src/assets', './dist/public/assets', {
@@ -24,7 +31,10 @@ if (process.argv[2] === 'server') {
     target: 'server@esnext',
     output: 'dist/$name.js',
     // allowSyntheticDefaultImports: true,
-    plugins: [ EnvPlugin({ NODE_ENV: isProduction ? 'production' : 'development' }), JSONPlugin() ],
+    plugins: [
+      EnvPlugin({ NODE_ENV: isProduction ? 'production' : 'development' }),
+      JSONPlugin(),
+    ],
   });
 
   serverFuse.bundle('server').instructions('> server.ts');
@@ -60,7 +70,7 @@ if (process.argv[2] === 'server') {
     cache: !isProduction,
     sourceMaps: !isProduction,
     homeDir: 'src/',
-    target: 'browser@es6',
+    target: 'browser@es5', // stay at es5 because uglify-es is broken
     output: 'dist/public/$name.js',
     allowSyntheticDefaultImports: true,
     plugins: [
@@ -72,9 +82,12 @@ if (process.argv[2] === 'server') {
       WebIndexPlugin({
         title: 'help out with us',
         path: 'js',
-        templateString: htmlFile.replace('{GOOGLE_CLIENT_ID}', GOOGLE_CLIENT_ID),
+        templateString: htmlFile.replace(
+          '{GOOGLE_CLIENT_ID}',
+          GOOGLE_CLIENT_ID,
+        ),
       }),
-      [ '.graphql|.gql', GraphQLPlugin() ],
+      ['.graphql|.gql', GraphQLPlugin()],
       isProduction &&
         QuantumPlugin({
           uglify: true,
@@ -86,7 +99,9 @@ if (process.argv[2] === 'server') {
 
   // fuse.bundle('apollo').instructions('> [../node_modules/apollo-client/*]');
   clientFuse.bundle('vendor').instructions('~ client.tsx');
-  const bundler = clientFuse.bundle('app').instructions('!> [client.tsx] + queries/*');
+  const bundler = clientFuse
+    .bundle('app')
+    .instructions('!> [client.tsx] + queries/*');
   // const bundler = fuse.bundle('app').instructions('> client.tsx');
 
   if (isProduction) {
@@ -104,11 +119,14 @@ if (process.argv[2] === 'server') {
     }); // launch hmr server
 
     //   vendorBundler.hmr({ reload: false }).watch();
-    bundler.hmr({ reload: false }).watch().completed(() => {
-      console.log('\x1b[36m%s\x1b[0m', 'client bundled');
-      // run the type checking
-      runTypeChecker(false);
-    });
+    bundler
+      .hmr({ reload: false })
+      .watch()
+      .completed(() => {
+        console.log('\x1b[36m%s\x1b[0m', 'client bundled');
+        // run the type checking
+        runTypeChecker(false);
+      });
     require('./dist/server');
   }
   clientFuse.run();
