@@ -7,7 +7,7 @@ import ApolloConstants from '../constants/Apollo';
 import LoginService from './LoginService';
 
 export default class ApolloService {
-  public static createClient(serverToken?: string) {
+  public static createClient(serverAuth?: string) {
     // Apollo
     const httpLink = new HttpLink({
       uri: ApolloConstants.gqlApiEndpoint,
@@ -15,11 +15,16 @@ export default class ApolloService {
     });
 
     const middlewareLink = new ApolloLink((operation, forward) => {
-      const token = serverToken || LoginService.getLoginState().token;
-      if (token) {
+      const authorization =
+        serverAuth ||
+        (LoginService.getLoginState().token &&
+          `Bearer ${LoginService.getLoginState().token}`);
+
+      // console.log(authorization);
+      if (authorization) {
         operation.setContext({
           headers: {
-            authorization: `Bearer ${token}`,
+            authorization,
           },
         });
       }
