@@ -19,11 +19,13 @@ class NotificationsController implements IController {
                 $daysOut: Int!
                 $filled: Boolean!
                 $unfilled: Boolean!
+                $adminSummary: Boolean!
               ) {
                 sendUpcomingReminders(
                   daysOut: $daysOut
                   filled: $filled
                   unfilled: $unfilled
+                  adminSummary: $adminSummary
                 ) {
                   notificationsSent
                   errors
@@ -34,6 +36,7 @@ class NotificationsController implements IController {
               daysOut: 3,
               filled: true,
               unfilled: true,
+              adminSummary: true,
             },
           });
 

@@ -36,13 +36,14 @@ Beta 2
 - [x] Email notification on unfilled Spot 3 days out
 - [x] Sort WhatsOpen page by date, not by activity then date
 - [x] Extend cookie timeout to 1 month
-- [ ] Email notification on activity summary to admins
+- [x] Email notification on activity summary to admins
 - [ ] Signup other members for a spot administratively
 - [ ] Success/error toaster on adding people to an org
 - [ ] Success/error toaster on adding people to an activity
 - [ ] Remove user from org/activity
 - [ ] Remove user from spot (admin)
 - [ ] Fix key issue warning on Home.tsx when canceling a spot
+- [ ] Show other people who are volunteering for the same day/organization when sending email notification
 - [ ] Google calendar integration
 
 Beta 3

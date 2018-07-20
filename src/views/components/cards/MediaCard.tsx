@@ -17,8 +17,8 @@ import { getInitials } from '../../../utils';
 
 type Member =
   | myData['allOrganizations'][0]['members'][0]
-  | myData['allOrganizations'][0]['activities'][0]['members'][0]
-  | myData['allOrganizations'][0]['activities'][0]['spots'][0]['members'][0];
+  | myData['allOrganizations'][0]['activities'][0]['members'][0];
+// | myData['allOrganizations'][0]['activities'][0]['spots'][0]['members'][0];
 
 export interface IMediaCardProps {
   className?: any;
@@ -132,7 +132,9 @@ const MediaCard = decorate<IMediaCardProps>(
                 <Avatar
                   key={member.id}
                   aria-label={member.user.name}
-                  title={member.user.name}
+                  title={`${member.user.name}${
+                    member.role ? ` (${member.role})` : ''
+                  }`}
                   alt={getInitials(member.user.name)}
                   src={member.user.photoLink}
                   className={classes.avatar}
