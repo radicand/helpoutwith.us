@@ -34,6 +34,7 @@ if (process.argv[2] === 'server') {
     plugins: [
       EnvPlugin({ NODE_ENV: isProduction ? 'production' : 'development' }),
       JSONPlugin(),
+      ['.graphql|.gql', GraphQLPlugin()],
     ],
   });
 

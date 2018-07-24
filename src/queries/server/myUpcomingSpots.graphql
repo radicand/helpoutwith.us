@@ -1,0 +1,30 @@
+query myUpcomingSpots($startsAfter: DateTime!, $userId: ID!) {
+  allUsers(filter: { id: $userId }) {
+    name
+  }
+  allSpots(
+    filter: {
+      startsAt_gt: $startsAfter
+      members_some: { status: Confirmed, user: { id: $userId } }
+    }
+  ) {
+    id
+    activity {
+      organization {
+        name
+        timezone
+        location
+      }
+      name
+      location
+    }
+    members {
+      user {
+        name
+        email
+      }
+    }
+    startsAt
+    endsAt
+  }
+}

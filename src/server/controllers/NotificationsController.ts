@@ -1,5 +1,6 @@
-import gql from 'graphql-tag';
 import * as Hapi from 'hapi';
+import { sendUpcomingReminders } from '../../queries/schema';
+import SendUpcomingRemindersMutation from '../../queries/server/sendUpcomingReminders.graphql';
 import ApolloService from '../../services/ApolloService';
 import IController from './IController';
 
@@ -13,25 +14,8 @@ class NotificationsController implements IController {
           const apolloClient = ApolloService.createClient(
             request.headers.authorization,
           );
-          const resp = await apolloClient.mutate({
-            mutation: gql`
-              mutation sendUpcomingReminders(
-                $daysOut: Int!
-                $filled: Boolean!
-                $unfilled: Boolean!
-                $adminSummary: Boolean!
-              ) {
-                sendUpcomingReminders(
-                  daysOut: $daysOut
-                  filled: $filled
-                  unfilled: $unfilled
-                  adminSummary: $adminSummary
-                ) {
-                  notificationsSent
-                  errors
-                }
-              }
-            `,
+          const resp = await apolloClient.mutate<sendUpcomingReminders>({
+            mutation: SendUpcomingRemindersMutation,
             variables: {
               daysOut: 3,
               filled: true,

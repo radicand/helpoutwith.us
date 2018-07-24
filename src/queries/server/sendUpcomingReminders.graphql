@@ -1,0 +1,16 @@
+mutation sendUpcomingReminders(
+  $daysOut: Int!
+  $filled: Boolean!
+  $unfilled: Boolean!
+  $adminSummary: Boolean!
+) {
+  sendUpcomingReminders(
+    daysOut: $daysOut
+    filled: $filled
+    unfilled: $unfilled
+    adminSummary: $adminSummary
+  ) {
+    notificationsSent
+    errors
+  }
+}

@@ -37,6 +37,7 @@ Beta 2
 - [x] Sort WhatsOpen page by date, not by activity then date
 - [x] Extend cookie timeout to 1 month
 - [x] Email notification on activity summary to admins
+- [ ] Google calendar integration
 - [ ] Signup other members for a spot administratively
 - [ ] Success/error toaster on adding people to an org
 - [ ] Success/error toaster on adding people to an activity
@@ -44,15 +45,18 @@ Beta 2
 - [ ] Remove user from spot (admin)
 - [ ] Fix key issue warning on Home.tsx when canceling a spot
 - [ ] Show other people who are volunteering for the same day/organization when sending email notification
-- [ ] Google calendar integration
 
-Beta 3
+  1.0
 
 - [ ] Better handling for slow connections on actions / optimistic UI
 - [ ] Improve Modal situation if warranted
 - [ ] Web push notifications
 - [ ] Calendar view
 - [ ] Add rolling spot deletion for > 1 year
+
+  1.1
+
+- [ ] Reporting views
 
 Nice to have
 

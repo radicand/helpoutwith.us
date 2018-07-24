@@ -8,7 +8,7 @@
   "scripts": {
     "updateGraphSchema": "npm run generateSchema && npm run generateSchemaTypes",
     "generateSchema": "apollo-codegen introspect-schema $GC_URL --output src/queries/schema.json",
-    "generateSchemaTypes": "apollo-codegen generate src/queries/*.graphql --addTypename --schema src/queries/schema.json --target typescript --output src/queries/schema.ts",
+    "generateSchemaTypes": "apollo-codegen generate src/queries/*.graphql src/queries/**/*.graphql --addTypename --schema src/queries/schema.json --target typescript --output src/queries/schema.ts",
     "cleanup": "rimraf dist",
     "bundle:server": "cross-env NODE_ENV=production node fuse server",
     "bundle:client": "cross-env NODE_ENV=production node fuse",
@@ -83,6 +83,7 @@
     "hapi-cron": "1.0.4",
     "hapi-pino": "4.0.4",
     "history": "4.7.2",
+    "ical-generator": "1.0.2",
     "inert": "5.1.0",
     "jss": "9.8.7",
     "laabr": "3.1.5",
