@@ -1,3 +1,4 @@
+import Button from '@material-ui/core/es/Button';
 import Collapse from '@material-ui/core/es/Collapse';
 import IconButton from '@material-ui/core/es/IconButton';
 import List from '@material-ui/core/es/List';
@@ -14,6 +15,7 @@ import CheckCircle from '@material-ui/icons/CheckCircle';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import MoodIcon from '@material-ui/icons/Mood';
+import SyncIcon from '@material-ui/icons/Sync';
 import { groupBy, map } from '@typed/list';
 import * as luxon from 'luxon';
 import * as React from 'react';
@@ -26,6 +28,7 @@ import { CancelSpotSignupCombo } from '../../queries/actions';
 import { myData, SpotStatus } from '../../queries/schema';
 import LoginService from '../../services/LoginService';
 import ConfirmationDialog from '../components/ConfirmationDialog';
+import ICalDialog from '../components/ICalDialog';
 import LoadingComponent from '../components/LoadingComponent';
 
 type SuperSpot = myData['allOrganizations'][0]['activities'][0]['spots'][0] & {
@@ -37,6 +40,7 @@ interface IState {
   openUpcoming: boolean;
   openPast: boolean;
   showConfirmationDialog: boolean;
+  showICalDialog: boolean;
   spotToCancel?: any; // LAZY
 }
 
@@ -64,6 +68,7 @@ class Home extends React.Component<IProps, IState> {
     this.state = {
       openUpcoming: true,
       openPast: false,
+      showICalDialog: false,
       showConfirmationDialog: false,
     };
   }
@@ -170,7 +175,16 @@ class Home extends React.Component<IProps, IState> {
             return (
               <List
                 className={classes.listRoot}
-                subheader={<ListSubheader>My Schedule</ListSubheader>}
+                subheader={
+                  <ListSubheader>
+                    My Schedule{' '}
+                    <Button variant="contained" onClick={this.toggleICalDialog}>
+                      {' '}
+                      <SyncIcon />
+                      Sync with your Calendar
+                    </Button>
+                  </ListSubheader>
+                }
               >
                 <ListItem button={true} onClick={this.handleClickUpcoming}>
                   <ListItemText primary="Upcoming" />
@@ -229,9 +243,20 @@ class Home extends React.Component<IProps, IState> {
             );
           }}
         </CancelSpotSignupCombo>
+        <ICalDialog
+          handleClose={this.toggleICalDialog}
+          open={this.state.showICalDialog}
+        />
       </React.Fragment>
     );
   }
+
+  private toggleICalDialog = () => {
+    this.setState((prevState) => ({
+      ...prevState,
+      showICalDialog: !prevState.showICalDialog,
+    }));
+  };
 
   private closeConfirmationDialog = () => {
     this.setState({

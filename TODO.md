@@ -37,7 +37,7 @@ Beta 2
 - [x] Sort WhatsOpen page by date, not by activity then date
 - [x] Extend cookie timeout to 1 month
 - [x] Email notification on activity summary to admins
-- [ ] Google calendar integration
+- [x] Google calendar integration
 - [ ] Signup other members for a spot administratively
 - [ ] Success/error toaster on adding people to an org
 - [ ] Success/error toaster on adding people to an activity
