@@ -8,7 +8,7 @@ import withStyles, {
 import Typography from '@material-ui/core/es/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
-import ModeEditIcon from '@material-ui/icons/ModeEdit';
+import EditIcon from '@material-ui/icons/Edit';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import * as React from 'react';
 import { compose } from 'react-apollo';
@@ -85,7 +85,7 @@ class OrganizationList extends React.Component<IProps, IState> {
       const kinds = [
         {
           label: 'Edit',
-          icon: <ModeEditIcon />,
+          icon: <EditIcon />,
           onClick: this._onClickFormEditModal.bind(this, org),
         },
         {
