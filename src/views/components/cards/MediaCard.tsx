@@ -5,6 +5,7 @@ import CardActions from '@material-ui/core/es/CardActions';
 import CardContent from '@material-ui/core/es/CardContent';
 import CardHeader from '@material-ui/core/es/CardHeader';
 import CardMedia from '@material-ui/core/es/CardMedia';
+import Chip from '@material-ui/core/es/Chip';
 import IconButton from '@material-ui/core/es/IconButton';
 import Paper from '@material-ui/core/es/Paper';
 import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
@@ -12,13 +13,14 @@ import withStyles, { StyleRules } from '@material-ui/core/es/styles/withStyles';
 import Typography from '@material-ui/core/es/Typography';
 import classnamer from 'classnamer';
 import * as React from 'react';
-import { myData } from '../../../queries/schema';
+import { myData, Role } from '../../../queries/schema';
 import { getInitials } from '../../../utils';
 
-type Member =
+type Member = Partial<
   | myData['allOrganizations'][0]['members'][0]
-  | myData['allOrganizations'][0]['activities'][0]['members'][0];
-// | myData['allOrganizations'][0]['activities'][0]['spots'][0]['members'][0];
+  | myData['allOrganizations'][0]['activities'][0]['members'][0]
+  // | myData['allOrganizations'][0]['activities'][0]['spots'][0]['members'][0]
+>;
 
 export interface IMediaCardProps {
   className?: any;
@@ -41,6 +43,10 @@ export interface IMediaCardProps {
   }>;
   members?: Member[];
   absentMembers?: Member[];
+  memberDeleteCallback?: (
+    member: Member,
+    event: React.SyntheticEvent<HTMLAllCollection>,
+  ) => void;
 }
 
 const decorate = withStyles((theme: Theme) => {
@@ -76,6 +82,9 @@ const decorate = withStyles((theme: Theme) => {
       padding: theme.spacing.unit,
       margin: theme.spacing.unit,
     },
+    chip: {
+      margin: theme.spacing.unit / 2,
+    },
     preheader: {
       marginBottom: 16,
       fontSize: 14,
@@ -101,6 +110,7 @@ const MediaCard = decorate<IMediaCardProps>(
     subheader,
     members,
     absentMembers,
+    memberDeleteCallback,
   }) => (
     <div>
       <Card className={classnamer(classes.card, className)}>
@@ -129,18 +139,26 @@ const MediaCard = decorate<IMediaCardProps>(
           {members && (
             <div className={classes.avatarRow}>
               {members.map((member) => (
-                <Avatar
+                <Chip
                   key={member.id}
-                  aria-label={member.user.name}
-                  title={`${member.user.name}${
-                    member.role ? ` (${member.role})` : ''
-                  }`}
-                  alt={getInitials(member.user.name)}
-                  src={member.user.photoLink}
-                  className={classes.avatar}
-                >
-                  {!member.user.photoLink && getInitials(member.user.name)}
-                </Avatar>
+                  color={member.role === Role.Admin ? 'primary' : 'secondary'}
+                  avatar={
+                    <Avatar
+                      aria-label={member.user.name}
+                      title={`${member.user.name}${
+                        member.role ? ` (${member.role})` : ''
+                      }`}
+                      alt={getInitials(member.user.name)}
+                      src={member.user.photoLink}
+                      //className={classes.avatar}
+                    >
+                      {!member.user.photoLink && getInitials(member.user.name)}
+                    </Avatar>
+                  }
+                  label={member.user.name}
+                  onDelete={memberDeleteCallback.bind({}, member)}
+                  className={classes.chip}
+                />
               ))}
               {absentMembers &&
                 absentMembers.length > 0 && (

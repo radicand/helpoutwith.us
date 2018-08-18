@@ -11,7 +11,7 @@
     "strictNullChecks": false,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
-    "lib": [ "dom", "es2016", "esnext.asynciterable" ],
+    "lib": ["dom", "es2016", "esnext.asynciterable"],
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -20,6 +20,6 @@
     "pretty": true,
     "strict": true
   },
-  "include": [ "src/**/*" ],
-  "exclude": [ "node_modules" ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }

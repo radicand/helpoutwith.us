@@ -17,9 +17,14 @@ import * as schema from './schema';
 type Organization = schema.myData['allOrganizations'][0];
 type OrgActivity = schema.myData['allOrganizations'][0]['activities'][0];
 type OrgActivitySpot = schema.myData['allOrganizations'][0]['activities'][0]['spots'][0];
+type OrgActivitySpotMember = schema.myData['allOrganizations'][0]['activities'][0]['spots'][0]['members'][0];
 
 export interface ISpotProps {
   children: (param: (spot: OrgActivitySpot) => {}) => {};
+}
+
+export interface ISpotMemberProps {
+  children: (param: (member: OrgActivitySpotMember) => {}) => {};
 }
 
 export class SignupForSpotCombo extends React.Component<ISpotProps, {}> {
@@ -99,6 +104,35 @@ export class MarkUnavailableForSpotCombo extends React.Component<
           </UpdateSpotUserRoleMutation>
         )}
       </CreateSpotUserRoleMutation>
+    );
+  }
+}
+
+// XXX Extend me more
+export class AdminSpotActionsCombo extends React.Component<
+  ISpotMemberProps,
+  {}
+> {
+  public render() {
+    return (
+      <UpdateSpotUserRoleMutation>
+        {(updateSpotUserRole) => {
+          async function executeMutation(member: OrgActivitySpotMember) {
+            if (!member) {
+              return;
+            } else {
+              return updateSpotUserRole({
+                variables: {
+                  id: member.id,
+                  status: schema.SpotStatus.Cancelled,
+                },
+              });
+            }
+          }
+
+          return this.props.children(executeMutation);
+        }}
+      </UpdateSpotUserRoleMutation>
     );
   }
 }

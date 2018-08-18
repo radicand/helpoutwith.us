@@ -74,6 +74,7 @@ if (process.argv[2] === 'server') {
     target: 'browser@es5', // stay at es5 because uglify-es is broken
     output: 'dist/public/$name.js',
     allowSyntheticDefaultImports: true,
+
     plugins: [
       EnvPlugin({
         NODE_ENV: isProduction ? 'production' : 'development',
@@ -93,7 +94,8 @@ if (process.argv[2] === 'server') {
         QuantumPlugin({
           uglify: true,
           treeshake: true,
-          // bakeApiIntoBundle: true, //'vendor',
+          bakeApiIntoBundle: true, //'vendor',
+          removeExportsInterop: false,
         }),
     ],
   });

@@ -17,8 +17,8 @@ import Typography from '@material-ui/core/es/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import EditIcon from '@material-ui/icons/Edit';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import * as luxon from 'luxon';
 import * as React from 'react';
 import { compose } from 'react-apollo';
@@ -29,6 +29,7 @@ import { SITE_TITLE } from '../../constants/System';
 import { FRIENDLY_DATE_FORMAT_WITH_DAYNAME } from '../../constants/Time';
 import { MyDataQuery } from '../../queries';
 import {
+  AdminSpotActionsCombo,
   CancelSpotSignupCombo,
   DeleteSpotCombo,
   MarkUnavailableForSpotCombo,
@@ -262,185 +263,204 @@ class SpotList extends React.Component<IProps, IState> {
 
               return (
                 <React.Fragment>
-                  <SignupForSpotCombo>
-                    {(signUpForSpot) => (
-                      <MarkUnavailableForSpotCombo>
-                        {(markUnavailableForSpot) => (
-                          <CancelSpotSignupCombo>
-                            {(cancelSpotSignup) => (
-                              <DeleteSpotCombo>
-                                {(deleteSpot) => {
-                                  return allOrganizations.map((org) => (
-                                    <React.Fragment key={org.id}>
-                                      <br />
-                                      <Typography variant="subheading">
-                                        {org.name}
-                                      </Typography>
-                                      {org.activities.map((activity) => (
-                                        <ExpansionPanel
-                                          key={activity.id}
-                                          expanded={
-                                            this.state.panelStates[
-                                              activity.id
-                                            ] === true
-                                          }
-                                          onChange={this.handlePanelChange(
-                                            activity.id,
-                                          )}
-                                        >
-                                          <ExpansionPanelSummary
-                                            expandIcon={<ExpandMoreIcon />}
-                                          >
-                                            <Typography
-                                              className={
-                                                classes.expansionHeading
+                  <AdminSpotActionsCombo>
+                    {(adminSpotMemberCancel) => (
+                      <SignupForSpotCombo>
+                        {(signUpForSpot) => (
+                          <MarkUnavailableForSpotCombo>
+                            {(markUnavailableForSpot) => (
+                              <CancelSpotSignupCombo>
+                                {(cancelSpotSignup) => (
+                                  <DeleteSpotCombo>
+                                    {(deleteSpot) => {
+                                      return allOrganizations.map((org) => (
+                                        <React.Fragment key={org.id}>
+                                          <br />
+                                          <Typography variant="subheading">
+                                            {org.name}
+                                          </Typography>
+                                          {org.activities.map((activity) => (
+                                            <ExpansionPanel
+                                              key={activity.id}
+                                              expanded={
+                                                this.state.panelStates[
+                                                  activity.id
+                                                ] === true
                                               }
+                                              onChange={this.handlePanelChange(
+                                                activity.id,
+                                              )}
                                             >
-                                              {activity.name}
-                                            </Typography>
-                                          </ExpansionPanelSummary>
-                                          <ExpansionPanelDetails>
-                                            <Grid container={true} spacing={24}>
-                                              {activity.spots
-                                                //   .sort((spot1, spot2) => {
-                                                //     return spot1.startsAt > spot2.startsAt ? -1 : 1;
-                                                //   })
-                                                // this isn't working for now ^
-                                                .filter((spot) => {
-                                                  if (this.state.showPast) {
-                                                    return true;
-                                                  } else {
-                                                    return (
-                                                      luxon.DateTime.fromISO(
-                                                        spot.endsAt,
-                                                      ) > luxon.DateTime.local()
-                                                    );
+                                              <ExpansionPanelSummary
+                                                expandIcon={<ExpandMoreIcon />}
+                                              >
+                                                <Typography
+                                                  className={
+                                                    classes.expansionHeading
                                                   }
-                                                })
-                                                .map((spot) => {
-                                                  const availableSpots =
-                                                    spot.numberNeeded -
-                                                    spot.members.filter(
-                                                      (member) =>
-                                                        member.status ===
-                                                        SpotStatus.Confirmed,
-                                                    ).length;
+                                                >
+                                                  {activity.name}
+                                                </Typography>
+                                              </ExpansionPanelSummary>
+                                              <ExpansionPanelDetails>
+                                                <Grid
+                                                  container={true}
+                                                  spacing={24}
+                                                >
+                                                  {activity.spots
+                                                    //   .sort((spot1, spot2) => {
+                                                    //     return spot1.startsAt > spot2.startsAt ? -1 : 1;
+                                                    //   })
+                                                    // this isn't working for now ^
+                                                    .filter((spot) => {
+                                                      if (this.state.showPast) {
+                                                        return true;
+                                                      } else {
+                                                        return (
+                                                          luxon.DateTime.fromISO(
+                                                            spot.endsAt,
+                                                          ) >
+                                                          luxon.DateTime.local()
+                                                        );
+                                                      }
+                                                    })
+                                                    .map((spot) => {
+                                                      const availableSpots =
+                                                        spot.numberNeeded -
+                                                        spot.members.filter(
+                                                          (member) =>
+                                                            member.status ===
+                                                            SpotStatus.Confirmed,
+                                                        ).length;
 
-                                                  return (
-                                                    <Grid
-                                                      item={true}
-                                                      xs={true}
-                                                      key={spot.id}
-                                                    >
-                                                      <MediaCard
-                                                        title={`${luxon.DateTime.fromISO(
-                                                          spot.startsAt,
-                                                        )
-                                                          .setZone(org.timezone)
-                                                          .toLocaleString(
-                                                            FRIENDLY_DATE_FORMAT_WITH_DAYNAME,
-                                                          )} - ${luxon.DateTime.fromISO(
-                                                          spot.endsAt,
-                                                        )
-                                                          .setZone(org.timezone)
-                                                          .toLocaleString(
-                                                            luxon.DateTime.fromISO(
+                                                      return (
+                                                        <Grid
+                                                          item={true}
+                                                          xs={true}
+                                                          key={spot.id}
+                                                        >
+                                                          <MediaCard
+                                                            title={`${luxon.DateTime.fromISO(
                                                               spot.startsAt,
                                                             )
                                                               .setZone(
                                                                 org.timezone,
                                                               )
-                                                              .toFormat(
-                                                                'DD',
-                                                              ) ===
-                                                            luxon.DateTime.fromISO(
+                                                              .toLocaleString(
+                                                                FRIENDLY_DATE_FORMAT_WITH_DAYNAME,
+                                                              )} - ${luxon.DateTime.fromISO(
                                                               spot.endsAt,
                                                             )
                                                               .setZone(
                                                                 org.timezone,
                                                               )
-                                                              .toFormat('DD')
-                                                              ? luxon.DateTime
-                                                                  .TIME_SIMPLE
-                                                              : FRIENDLY_DATE_FORMAT_WITH_DAYNAME,
-                                                          )}`}
-                                                        subheader={
-                                                          <span>
-                                                            {availableSpots ===
-                                                              0 && (
-                                                              <CheckCircleIcon fontSize="16px" />
-                                                            )}{' '}
-                                                            {now >
-                                                            luxon.DateTime.fromISO(
-                                                              spot.endsAt,
-                                                            )
-                                                              ? 'This spot is in the past with '
-                                                              : 'This spot is upcoming with '}{' '}
-                                                            {availableSpots ===
-                                                            0
-                                                              ? 'all spots filled'
-                                                              : `${availableSpots} spots still open`}
-                                                          </span>
-                                                        }
-                                                        body={
-                                                          <List>
-                                                            {(spot.location ||
-                                                              activity.location ||
-                                                              org.location) && (
-                                                              <ListItem>
-                                                                <ListItemText
-                                                                  primary="Location"
-                                                                  secondary={
-                                                                    spot.location ||
-                                                                    activity.location ||
-                                                                    org.location
-                                                                  }
-                                                                />
-                                                              </ListItem>
+                                                              .toLocaleString(
+                                                                luxon.DateTime.fromISO(
+                                                                  spot.startsAt,
+                                                                )
+                                                                  .setZone(
+                                                                    org.timezone,
+                                                                  )
+                                                                  .toFormat(
+                                                                    'DD',
+                                                                  ) ===
+                                                                luxon.DateTime.fromISO(
+                                                                  spot.endsAt,
+                                                                )
+                                                                  .setZone(
+                                                                    org.timezone,
+                                                                  )
+                                                                  .toFormat(
+                                                                    'DD',
+                                                                  )
+                                                                  ? luxon
+                                                                      .DateTime
+                                                                      .TIME_SIMPLE
+                                                                  : FRIENDLY_DATE_FORMAT_WITH_DAYNAME,
+                                                              )}`}
+                                                            subheader={
+                                                              <span>
+                                                                {availableSpots ===
+                                                                  0 && (
+                                                                  <CheckCircleIcon fontSize="16px" />
+                                                                )}{' '}
+                                                                {now >
+                                                                luxon.DateTime.fromISO(
+                                                                  spot.endsAt,
+                                                                )
+                                                                  ? 'This spot is in the past with '
+                                                                  : 'This spot is upcoming with '}{' '}
+                                                                {availableSpots ===
+                                                                0
+                                                                  ? 'all spots filled'
+                                                                  : `${availableSpots} spots still open`}
+                                                              </span>
+                                                            }
+                                                            body={
+                                                              <List>
+                                                                {(spot.location ||
+                                                                  activity.location ||
+                                                                  org.location) && (
+                                                                  <ListItem>
+                                                                    <ListItemText
+                                                                      primary="Location"
+                                                                      secondary={
+                                                                        spot.location ||
+                                                                        activity.location ||
+                                                                        org.location
+                                                                      }
+                                                                    />
+                                                                  </ListItem>
+                                                                )}
+                                                              </List>
+                                                            }
+                                                            buttons={getButtons(
+                                                              activity,
+                                                              spot,
+                                                              signUpForSpot,
+                                                              markUnavailableForSpot,
+                                                              cancelSpotSignup,
                                                             )}
-                                                          </List>
-                                                        }
-                                                        buttons={getButtons(
-                                                          activity,
-                                                          spot,
-                                                          signUpForSpot,
-                                                          markUnavailableForSpot,
-                                                          cancelSpotSignup,
-                                                        )}
-                                                        actions={getActions(
-                                                          org,
-                                                          activity,
-                                                          spot,
-                                                          deleteSpot,
-                                                        )}
-                                                        members={spot.members.filter(
-                                                          (member) =>
-                                                            member.status ===
-                                                            SpotStatus.Confirmed,
-                                                        )}
-                                                        absentMembers={spot.members.filter(
-                                                          (member) =>
-                                                            member.status ===
-                                                            SpotStatus.Absent,
-                                                        )}
-                                                      />
-                                                    </Grid>
-                                                  );
-                                                })}
-                                            </Grid>
-                                          </ExpansionPanelDetails>
-                                        </ExpansionPanel>
-                                      ))}
-                                    </React.Fragment>
-                                  ));
-                                }}
-                              </DeleteSpotCombo>
+                                                            actions={getActions(
+                                                              org,
+                                                              activity,
+                                                              spot,
+                                                              deleteSpot,
+                                                            )}
+                                                            members={spot.members.filter(
+                                                              (member) =>
+                                                                member.status ===
+                                                                SpotStatus.Confirmed,
+                                                            )}
+                                                            absentMembers={spot.members.filter(
+                                                              (member) =>
+                                                                member.status ===
+                                                                SpotStatus.Absent,
+                                                            )}
+                                                            memberDeleteCallback={
+                                                              isActivityAdmin &&
+                                                              adminSpotMemberCancel
+                                                            }
+                                                          />
+                                                        </Grid>
+                                                      );
+                                                    })}
+                                                </Grid>
+                                              </ExpansionPanelDetails>
+                                            </ExpansionPanel>
+                                          ))}
+                                        </React.Fragment>
+                                      ));
+                                    }}
+                                  </DeleteSpotCombo>
+                                )}
+                              </CancelSpotSignupCombo>
                             )}
-                          </CancelSpotSignupCombo>
+                          </MarkUnavailableForSpotCombo>
                         )}
-                      </MarkUnavailableForSpotCombo>
+                      </SignupForSpotCombo>
                     )}
-                  </SignupForSpotCombo>
+                  </AdminSpotActionsCombo>
                   {isActivityAdmin && (
                     <Button
                       onClick={this._onClickFormAddModal}
