@@ -156,7 +156,11 @@ const MediaCard = decorate<IMediaCardProps>(
                     </Avatar>
                   }
                   label={member.user.name}
-                  onDelete={memberDeleteCallback.bind({}, member)}
+                  onDelete={
+                    memberDeleteCallback
+                      ? memberDeleteCallback.bind({}, member)
+                      : void 0
+                  }
                   className={classes.chip}
                 />
               ))}

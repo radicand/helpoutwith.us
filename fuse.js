@@ -92,7 +92,7 @@ if (process.argv[2] === 'server') {
       ['.graphql|.gql', GraphQLPlugin()],
       isProduction &&
         QuantumPlugin({
-          uglify: true,
+          uglify: false,
           treeshake: true,
           bakeApiIntoBundle: true, //'vendor',
           removeExportsInterop: false,
