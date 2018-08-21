@@ -65,7 +65,6 @@ const decorate = withStyles((theme: Theme) => {
       justifyContent: 'center',
     },
     avatar: {
-      margin: theme.spacing.unit,
       color: '#fff',
       backgroundColor: theme.palette.secondary.light,
       transition: theme.transitions.create(
@@ -169,17 +168,32 @@ const MediaCard = decorate<IMediaCardProps>(
                   <Paper className={classes.absent}>
                     <Typography variant="subheading">Not Available</Typography>
                     {absentMembers.map((member) => (
-                      <Avatar
+                      <Chip
                         key={member.id}
-                        aria-label={member.user.name}
-                        title={member.user.name}
-                        alt={getInitials(member.user.name)}
-                        src={member.user.photoLink}
-                        className={classes.avatar}
-                      >
-                        {!member.user.photoLink &&
-                          getInitials(member.user.name)}
-                      </Avatar>
+                        color={
+                          member.role === Role.Admin ? 'primary' : 'secondary'
+                        }
+                        avatar={
+                          <Avatar
+                            key={member.id}
+                            aria-label={member.user.name}
+                            title={member.user.name}
+                            alt={getInitials(member.user.name)}
+                            src={member.user.photoLink}
+                            className={classes.avatar}
+                          >
+                            {!member.user.photoLink &&
+                              getInitials(member.user.name)}
+                          </Avatar>
+                        }
+                        label={member.user.name}
+                        // onDelete={
+                        //   memberDeleteCallback
+                        //     ? memberDeleteCallback.bind({}, member)
+                        //     : void 0
+                        // }
+                        className={classes.chip}
+                      />
                     ))}
                   </Paper>
                 )}
