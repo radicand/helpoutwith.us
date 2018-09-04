@@ -17,8 +17,12 @@ import { Helmet } from 'react-helmet';
 import { RouteComponentProps } from 'react-router-dom';
 import { SITE_TITLE } from '../../constants/System';
 import { MyDataQuery } from '../../queries';
-import { DeleteOrganizationCombo } from '../../queries/actions';
+import {
+  AdminSpotActionsCombo,
+  DeleteOrganizationCombo,
+} from '../../queries/actions';
 import { myData, Role } from '../../queries/schema';
+import LoginService from '../../services/LoginService';
 import MediaCard from '../components/cards/MediaCard';
 import LoadingComponent from '../components/LoadingComponent';
 import OrganizationModal from '../modals/OrganizationModal';
@@ -135,33 +139,46 @@ class OrganizationList extends React.Component<IProps, IState> {
             or "Church".
           </Typography>
           <Grid container={true} spacing={0} className={classes.grid}>
-            <DeleteOrganizationCombo>
-              {(deleteOrganization) => {
-                return (
-                  <MyDataQuery>
-                    {({ loading, data }) => {
-                      if (loading) {
-                        return <LoadingComponent />;
-                      }
+            <AdminSpotActionsCombo>
+              {(adminDeletionFunctions) => (
+                <DeleteOrganizationCombo>
+                  {(deleteOrganization) => {
+                    return (
+                      <MyDataQuery>
+                        {({ loading, data }) => {
+                          if (loading) {
+                            return <LoadingComponent />;
+                          }
 
-                      return data.allOrganizations.map((org) => (
-                        <Grid item={true} xs={true} key={org.id}>
-                          <MediaCard
-                            imageLink={
-                              org.bannerImage ? org.bannerImage.url : null
-                            }
-                            headline={org.name}
-                            bodyText={org.description}
-                            actions={getActions(org, deleteOrganization)}
-                            members={org.members}
-                          />
-                        </Grid>
-                      ));
-                    }}
-                  </MyDataQuery>
-                );
-              }}
-            </DeleteOrganizationCombo>
+                          return data.allOrganizations.map((org) => (
+                            <Grid item={true} xs={true} key={org.id}>
+                              <MediaCard
+                                imageLink={
+                                  org.bannerImage ? org.bannerImage.url : null
+                                }
+                                headline={org.name}
+                                bodyText={org.description}
+                                actions={getActions(org, deleteOrganization)}
+                                members={org.members}
+                                memberDeleteCallback={
+                                  org.members.find(
+                                    (member) =>
+                                      member.role === Role.Admin &&
+                                      member.user.id ===
+                                        LoginService.getLoginState().id,
+                                  ) &&
+                                  adminDeletionFunctions.doDeleteOrganizationUserRole
+                                }
+                              />
+                            </Grid>
+                          ));
+                        }}
+                      </MyDataQuery>
+                    );
+                  }}
+                </DeleteOrganizationCombo>
+              )}
+            </AdminSpotActionsCombo>
           </Grid>
         </div>
         <Button

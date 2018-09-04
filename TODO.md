@@ -38,11 +38,12 @@ Beta 2
 - [x] Extend cookie timeout to 1 month
 - [x] Email notification on activity summary to admins
 - [x] Google calendar integration
-- [ ] Remove user from spot (admin)
+- [x] Remove user from spot (admin) # delete the entry, don't cancel
+- [x] Remove user from org/activity
+- [ ] Add heuristic to detect login bounce loop issue and delete all cookies/state
 - [ ] Signup other members for a spot administratively
 - [ ] Success/error toaster on adding people to an org
 - [ ] Success/error toaster on adding people to an activity
-- [ ] Remove user from org/activity
 - [ ] Fix key issue warning on Home.tsx when canceling a spot
 - [ ] Show other people who are volunteering for the same day/organization when sending email notification
 

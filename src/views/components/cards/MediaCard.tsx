@@ -13,14 +13,9 @@ import withStyles, { StyleRules } from '@material-ui/core/es/styles/withStyles';
 import Typography from '@material-ui/core/es/Typography';
 import classnamer from 'classnamer';
 import * as React from 'react';
-import { myData, Role } from '../../../queries/schema';
+import { Member } from '../../../queries/actions';
+import { Role } from '../../../queries/schema';
 import { getInitials } from '../../../utils';
-
-type Member = Partial<
-  | myData['allOrganizations'][0]['members'][0]
-  | myData['allOrganizations'][0]['activities'][0]['members'][0]
-  // | myData['allOrganizations'][0]['activities'][0]['spots'][0]['members'][0]
->;
 
 export interface IMediaCardProps {
   className?: any;
@@ -187,11 +182,11 @@ const MediaCard = decorate<IMediaCardProps>(
                           </Avatar>
                         }
                         label={member.user.name}
-                        // onDelete={
-                        //   memberDeleteCallback
-                        //     ? memberDeleteCallback.bind({}, member)
-                        //     : void 0
-                        // }
+                        onDelete={
+                          memberDeleteCallback
+                            ? memberDeleteCallback.bind({}, member)
+                            : void 0
+                        }
                         className={classes.chip}
                       />
                     ))}

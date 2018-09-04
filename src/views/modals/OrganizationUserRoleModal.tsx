@@ -45,7 +45,7 @@ interface IOProps {
   isOpen: boolean;
   handleClose: () => void;
   userRole?: IOrgRoleState;
-  organization: Organization;
+  org: Organization;
 }
 
 type IIProps = WithStyles<'textField' | 'formControl'>;
@@ -143,7 +143,7 @@ class OrganizationUserRoleModal extends React.Component<
                     variables: {
                       email: this.state.email,
                       role: this.state.role,
-                      organizationId: this.props.organization.id,
+                      organizationId: this.props.org.id,
                     },
                   });
 

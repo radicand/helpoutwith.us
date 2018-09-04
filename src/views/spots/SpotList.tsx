@@ -264,7 +264,7 @@ class SpotList extends React.Component<IProps, IState> {
               return (
                 <React.Fragment>
                   <AdminSpotActionsCombo>
-                    {(adminSpotMemberCancel) => (
+                    {(adminDeletionFunctions) => (
                       <SignupForSpotCombo>
                         {(signUpForSpot) => (
                           <MarkUnavailableForSpotCombo>
@@ -439,7 +439,7 @@ class SpotList extends React.Component<IProps, IState> {
                                                             )}
                                                             memberDeleteCallback={
                                                               isActivityAdmin &&
-                                                              adminSpotMemberCancel
+                                                              adminDeletionFunctions.doDeleteSpotUserRole
                                                             }
                                                           />
                                                         </Grid>

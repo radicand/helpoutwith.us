@@ -18,6 +18,19 @@ type Organization = schema.myData['allOrganizations'][0];
 type OrgActivity = schema.myData['allOrganizations'][0]['activities'][0];
 type OrgActivitySpot = schema.myData['allOrganizations'][0]['activities'][0]['spots'][0];
 type OrgActivitySpotMember = schema.myData['allOrganizations'][0]['activities'][0]['spots'][0]['members'][0];
+export type Member = Pick<
+  schema.myData['allOrganizations'][0]['members'][0],
+  'id' | 'user'
+> &
+  Partial<Pick<schema.myData['allOrganizations'][0]['members'][0], 'role'>> &
+  Partial<
+    Pick<
+      schema.myData['allOrganizations'][0]['activities'][0]['spots'][0]['members'][0],
+      'status'
+    >
+  > & {
+    __typename: any;
+  };
 
 export interface ISpotProps {
   children: (param: (spot: OrgActivitySpot) => {}) => {};
@@ -25,6 +38,10 @@ export interface ISpotProps {
 
 export interface ISpotMemberProps {
   children: (param: (member: OrgActivitySpotMember) => {}) => {};
+}
+
+export interface IMemberProps {
+  children: (param: { [key: string]: (member: Member) => {} }) => {};
 }
 
 export class SignupForSpotCombo extends React.Component<ISpotProps, {}> {
@@ -109,30 +126,62 @@ export class MarkUnavailableForSpotCombo extends React.Component<
 }
 
 // XXX Extend me more
-export class AdminSpotActionsCombo extends React.Component<
-  ISpotMemberProps,
-  {}
-> {
+export class AdminSpotActionsCombo extends React.Component<IMemberProps, {}> {
   public render() {
     return (
-      <UpdateSpotUserRoleMutation>
-        {(updateSpotUserRole) => {
-          async function executeMutation(member: OrgActivitySpotMember) {
-            if (!member) {
-              return;
-            } else {
-              return updateSpotUserRole({
-                variables: {
-                  id: member.id,
-                  status: schema.SpotStatus.Cancelled,
-                },
-              });
-            }
-          }
+      <DeleteOrganizationUserRoleMutation>
+        {(deleteOrganizationUserRole) => (
+          <DeleteActivityUserRoleMutation>
+            {(deleteActivityUserRole) => (
+              <DeleteSpotUserRoleMutation>
+                {(deleteSpotUserRole) => {
+                  async function doDeleteSpotUserRole(member: Member) {
+                    if (!member) {
+                      return;
+                    } else {
+                      return deleteSpotUserRole({
+                        variables: {
+                          id: member.id,
+                        },
+                      });
+                    }
+                  }
 
-          return this.props.children(executeMutation);
-        }}
-      </UpdateSpotUserRoleMutation>
+                  async function doDeleteActivityUserRole(member: Member) {
+                    if (!member) {
+                      return;
+                    } else {
+                      return deleteActivityUserRole({
+                        variables: {
+                          id: member.id,
+                        },
+                      });
+                    }
+                  }
+
+                  async function doDeleteOrganizationUserRole(member: Member) {
+                    if (!member) {
+                      return;
+                    } else {
+                      return deleteOrganizationUserRole({
+                        variables: {
+                          id: member.id,
+                        },
+                      });
+                    }
+                  }
+
+                  return this.props.children({
+                    doDeleteSpotUserRole,
+                    doDeleteActivityUserRole,
+                    doDeleteOrganizationUserRole,
+                  });
+                }}
+              </DeleteSpotUserRoleMutation>
+            )}
+          </DeleteActivityUserRoleMutation>
+        )}
+      </DeleteOrganizationUserRoleMutation>
     );
   }
 }

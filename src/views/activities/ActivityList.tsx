@@ -11,15 +11,18 @@ import withStyles, {
 import Typography from '@material-ui/core/es/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import EditIcon from '@material-ui/icons/Edit';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import * as React from 'react';
 import { compose } from 'react-apollo';
 import { Helmet } from 'react-helmet';
 import { SITE_TITLE } from '../../constants/System';
 import { MyDataQuery } from '../../queries';
-import { DeleteActivityCombo } from '../../queries/actions';
+import {
+  AdminSpotActionsCombo,
+  DeleteActivityCombo,
+} from '../../queries/actions';
 import { myData, Role } from '../../queries/schema';
 import LoginService from '../../services/LoginService';
 import MediaCard from '../components/cards/MediaCard';
@@ -178,38 +181,52 @@ class ActivityList extends React.Component<IProps, IState> {
 
               return (
                 <React.Fragment>
-                  {allOrganizations.map((org) => (
-                    <ExpansionPanel key={org.id}>
-                      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography className={classes.expansionHeading}>
-                          {org.name}
-                        </Typography>
-                      </ExpansionPanelSummary>
-                      <ExpansionPanelDetails>
-                        <DeleteActivityCombo>
-                          {(executeDeletion) => (
-                            <Grid container={true} spacing={24}>
-                              {org.activities.map((activity) => (
-                                <Grid item={true} xs={true} key={activity.id}>
-                                  <MediaCard
-                                    title={activity.name}
-                                    subheader={org.name}
-                                    bodyText={activity.description}
-                                    actions={getActions(
-                                      org,
-                                      activity,
-                                      executeDeletion.bind(this, activity),
-                                    )}
-                                    members={activity.members}
-                                  />
+                  <AdminSpotActionsCombo>
+                    {(adminDeletionFunctions) =>
+                      allOrganizations.map((org) => (
+                        <ExpansionPanel key={org.id}>
+                          <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                          >
+                            <Typography className={classes.expansionHeading}>
+                              {org.name}
+                            </Typography>
+                          </ExpansionPanelSummary>
+                          <ExpansionPanelDetails>
+                            <DeleteActivityCombo>
+                              {(executeDeletion) => (
+                                <Grid container={true} spacing={24}>
+                                  {org.activities.map((activity) => (
+                                    <Grid
+                                      item={true}
+                                      xs={true}
+                                      key={activity.id}
+                                    >
+                                      <MediaCard
+                                        title={activity.name}
+                                        subheader={org.name}
+                                        bodyText={activity.description}
+                                        actions={getActions(
+                                          org,
+                                          activity,
+                                          executeDeletion.bind(this, activity),
+                                        )}
+                                        members={activity.members}
+                                        memberDeleteCallback={
+                                          isOrgAdmin &&
+                                          adminDeletionFunctions.doDeleteActivityUserRole
+                                        }
+                                      />
+                                    </Grid>
+                                  ))}
                                 </Grid>
-                              ))}
-                            </Grid>
-                          )}
-                        </DeleteActivityCombo>
-                      </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                  ))}
+                              )}
+                            </DeleteActivityCombo>
+                          </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                      ))
+                    }
+                  </AdminSpotActionsCombo>
                   {isOrgAdmin && (
                     <Button
                       onClick={this._onClickFormModal}

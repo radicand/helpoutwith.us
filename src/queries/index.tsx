@@ -60,6 +60,7 @@ const wrappedMutation = <P extends any, V = OperationVariables>(
   mutation: DocumentNode,
   refetchQueries?: MutationProps['refetchQueries'],
   variables?: V,
+  update?: MutationProps['update'],
 ) => {
   type MPO = MutationProps<P, V>;
 
@@ -77,6 +78,7 @@ const wrappedMutation = <P extends any, V = OperationVariables>(
           mutation={mutation}
           variables={variables}
           refetchQueries={refetchQueries}
+          update={update}
           {...this.props}
         />
       );
@@ -177,7 +179,12 @@ export const SigninUserMutation = wrappedMutation<
 export const DeleteOrganizationUserRoleMutation = wrappedMutation<
   schema.deleteOrganizationUserRole,
   schema.deleteOrganizationUserRoleVariables
->(DeleteOrganizationUserRoleGQL);
+>(DeleteOrganizationUserRoleGQL, [
+  {
+    query: MyDataGQL,
+    variables: { user_id: LoginService.getLoginState().id },
+  },
+]);
 
 export const DeleteOrganizationMutation = wrappedMutation<
   schema.deleteOrganization,
@@ -192,7 +199,12 @@ export const DeleteOrganizationMutation = wrappedMutation<
 export const DeleteActivityUserRoleMutation = wrappedMutation<
   schema.deleteActivityUserRole,
   schema.deleteActivityUserRoleVariables
->(DeleteActivityUserRoleGQL);
+>(DeleteActivityUserRoleGQL, [
+  {
+    query: MyDataGQL,
+    variables: { user_id: LoginService.getLoginState().id },
+  },
+]);
 
 export const DeleteActivityMutation = wrappedMutation<
   schema.deleteActivity,
@@ -207,7 +219,12 @@ export const DeleteActivityMutation = wrappedMutation<
 export const DeleteSpotUserRoleMutation = wrappedMutation<
   schema.deleteSpotUserRole,
   schema.deleteSpotUserRoleVariables
->(DeleteSpotUserRoleGQL);
+>(DeleteSpotUserRoleGQL, [
+  {
+    query: MyDataGQL,
+    variables: { user_id: LoginService.getLoginState().id },
+  },
+]);
 
 export const DeleteSpotMutation = wrappedMutation<
   schema.deleteSpot,
@@ -222,9 +239,4 @@ export const DeleteSpotMutation = wrappedMutation<
 export const UpdateSpotUserRoleMutation = wrappedMutation<
   schema.updateSpotUserRole,
   schema.updateSpotUserRoleVariables
->(UpdateSpotUserRoleGQL, [
-  {
-    query: MyDataGQL,
-    variables: { user_id: LoginService.getLoginState().id },
-  },
-]);
+>(UpdateSpotUserRoleGQL);
