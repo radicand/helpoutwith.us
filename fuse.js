@@ -69,7 +69,7 @@ if (process.argv[2] === 'server') {
   // fuse config
   const clientFuse = FuseBox.init({
     cache: !isProduction,
-    sourceMaps: !isProduction,
+    sourceMaps: true,
     homeDir: 'src/',
     target: 'browser@es5', // stay at es5 because uglify-es is broken
     output: 'dist/public/$name.js',
@@ -100,12 +100,16 @@ if (process.argv[2] === 'server') {
     ],
   });
 
-  // fuse.bundle('apollo').instructions('> [../node_modules/apollo-client/*]');
-  clientFuse.bundle('vendor').instructions('~ client.tsx');
-  const bundler = clientFuse
-    .bundle('app')
-    .instructions('!> [client.tsx] + queries/*');
-  // const bundler = fuse.bundle('app').instructions('> client.tsx');
+  let bundler;
+
+  if (isProduction) {
+    clientFuse.bundle('vendor').instructions('~ client.tsx');
+    bundler = clientFuse
+      .bundle('app')
+      .instructions('!> [client.tsx] + queries/*');
+  } else {
+    bundler = clientFuse.bundle('app').instructions('> client.tsx');
+  }
 
   if (isProduction) {
     bundler.completed(() => {
