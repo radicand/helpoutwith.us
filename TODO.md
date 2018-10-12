@@ -40,16 +40,17 @@ Beta 2
 - [x] Google calendar integration
 - [x] Remove user from spot (admin) # delete the entry, don't cancel
 - [x] Remove user from org/activity
-- [ ] Add heuristic to detect login bounce loop issue and delete all cookies/state
-- [ ] Signup other members for a spot administratively
-- [ ] Success/error toaster on adding people to an org
-- [ ] Success/error toaster on adding people to an activity
-- [ ] Fix key issue warning on Home.tsx when canceling a spot
+- [ ] Better handling for slow connections on actions / optimistic UI
+- [ ] Grid view for who's on when summaries
 - [ ] Show other people who are volunteering for the same day/organization when sending email notification
 
   1.0
 
-- [ ] Better handling for slow connections on actions / optimistic UI
+- [ ] Fix key issue warning on Home.tsx when canceling a spot
+- [ ] Success/error toaster on adding people to an org
+- [ ] Success/error toaster on adding people to an activity
+- [ ] Add heuristic to detect login bounce loop issue and delete all cookies/state
+- [ ] Signup other members for a spot administratively
 - [ ] Improve Modal situation if warranted
 - [ ] Web push notifications
 - [ ] Calendar view
