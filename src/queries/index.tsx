@@ -58,9 +58,12 @@ const wrappedQuery = <P extends any, V = OperationVariables>(
 
 const wrappedMutation = <P extends any, V = OperationVariables>(
   mutation: DocumentNode,
-  refetchQueries?: MutationProps['refetchQueries'],
-  variables?: V,
-  update?: MutationProps['update'],
+  opts?: {
+    refetchQueries?: MutationProps['refetchQueries'];
+    variables?: V;
+    update?: MutationProps['update'];
+    optimisticResponse?: MutationProps['optimisticResponse'];
+  },
 ) => {
   type MPO = MutationProps<P, V>;
 
@@ -74,13 +77,7 @@ const wrappedMutation = <P extends any, V = OperationVariables>(
       class UnwrappedComponent extends Mutation<P, V> {}
 
       return (
-        <UnwrappedComponent
-          mutation={mutation}
-          variables={variables}
-          refetchQueries={refetchQueries}
-          update={update}
-          {...this.props}
-        />
+        <UnwrappedComponent mutation={mutation} {...opts} {...this.props} />
       );
     }
   };
@@ -99,62 +96,80 @@ export const LoggedInUserQuery = wrappedQuery<schema.loggedInUser>(
 export const CreateOrganizationUserRoleMutation = wrappedMutation<
   schema.addOrgUserRole,
   schema.addOrgUserRoleVariables
->(CreateOrganizationUserRoleGQL, [
-  {
-    query: MyDataGQL,
-    variables: { user_id: LoginService.getLoginState().id },
-  },
-]);
+>(CreateOrganizationUserRoleGQL, {
+  refetchQueries: [
+    {
+      query: MyDataGQL,
+      variables: { user_id: LoginService.getLoginState().id },
+    },
+  ],
+});
 
 export const CreateActivityUserRoleMutation = wrappedMutation<
   schema.addActivityUserRole,
   schema.addActivityUserRoleVariables
->(CreateActivityUserRoleGQL, [
-  {
-    query: MyDataGQL,
-    variables: { user_id: LoginService.getLoginState().id },
-  },
-]);
+>(CreateActivityUserRoleGQL, {
+  refetchQueries: [
+    {
+      query: MyDataGQL,
+      variables: { user_id: LoginService.getLoginState().id },
+    },
+  ],
+});
 
 export const CreateSpotMutation = wrappedMutation<
   schema.createSpot,
   schema.createSpotVariables
->(CreateSpotGQL, [
-  {
-    query: MyDataGQL,
-    variables: { user_id: LoginService.getLoginState().id },
-  },
-]);
+>(CreateSpotGQL, {
+  refetchQueries: [
+    {
+      query: MyDataGQL,
+      variables: { user_id: LoginService.getLoginState().id },
+    },
+  ],
+});
 
 export const CreateOrganizationMutation = wrappedMutation<
   schema.createOrg,
   schema.createOrgVariables
->(CreateOrganizationGQL, [
-  {
-    query: MyDataGQL,
-    variables: { user_id: LoginService.getLoginState().id },
-  },
-]);
+>(CreateOrganizationGQL, {
+  refetchQueries: [
+    {
+      query: MyDataGQL,
+      variables: { user_id: LoginService.getLoginState().id },
+    },
+  ],
+});
 
 export const CreateActivityMutation = wrappedMutation<
   schema.createAct,
   schema.createActVariables
->(CreateActivityGQL, [
-  {
-    query: MyDataGQL,
-    variables: { user_id: LoginService.getLoginState().id },
-  },
-]);
+>(CreateActivityGQL, {
+  refetchQueries: [
+    {
+      query: MyDataGQL,
+      variables: { user_id: LoginService.getLoginState().id },
+    },
+  ],
+});
 
 export const CreateSpotUserRoleMutation = wrappedMutation<
   schema.createSpotUserRole,
   schema.createSpotUserRoleVariables
->(CreateSpotUserRoleGQL, [
-  {
-    query: MyDataGQL,
-    variables: { user_id: LoginService.getLoginState().id },
+>(CreateSpotUserRoleGQL, {
+  optimisticResponse: {
+    __typename: 'Mutation',
+    createSpotUserRole: {
+      __typename: 'SpotUserRole',
+      id: `${+new Date()}`,
+      status: schema.SpotStatus.Confirmed,
+      user: {
+        __typename: 'User',
+        id: LoginService.getLoginState().id,
+      },
+    },
   },
-]);
+});
 
 export const UpdateOrganizationMutation = wrappedMutation<
   schema.updateOrganization,
@@ -179,62 +194,74 @@ export const SigninUserMutation = wrappedMutation<
 export const DeleteOrganizationUserRoleMutation = wrappedMutation<
   schema.deleteOrganizationUserRole,
   schema.deleteOrganizationUserRoleVariables
->(DeleteOrganizationUserRoleGQL, [
-  {
-    query: MyDataGQL,
-    variables: { user_id: LoginService.getLoginState().id },
-  },
-]);
+>(DeleteOrganizationUserRoleGQL, {
+  refetchQueries: [
+    {
+      query: MyDataGQL,
+      variables: { user_id: LoginService.getLoginState().id },
+    },
+  ],
+});
 
 export const DeleteOrganizationMutation = wrappedMutation<
   schema.deleteOrganization,
   schema.deleteOrganizationVariables
->(DeleteOrganizationGQL, [
-  {
-    query: MyDataGQL,
-    variables: { user_id: LoginService.getLoginState().id },
-  },
-]);
+>(DeleteOrganizationGQL, {
+  refetchQueries: [
+    {
+      query: MyDataGQL,
+      variables: { user_id: LoginService.getLoginState().id },
+    },
+  ],
+});
 
 export const DeleteActivityUserRoleMutation = wrappedMutation<
   schema.deleteActivityUserRole,
   schema.deleteActivityUserRoleVariables
->(DeleteActivityUserRoleGQL, [
-  {
-    query: MyDataGQL,
-    variables: { user_id: LoginService.getLoginState().id },
-  },
-]);
+>(DeleteActivityUserRoleGQL, {
+  refetchQueries: [
+    {
+      query: MyDataGQL,
+      variables: { user_id: LoginService.getLoginState().id },
+    },
+  ],
+});
 
 export const DeleteActivityMutation = wrappedMutation<
   schema.deleteActivity,
   schema.deleteActivityVariables
->(DeleteActivityGQL, [
-  {
-    query: MyDataGQL,
-    variables: { user_id: LoginService.getLoginState().id },
-  },
-]);
+>(DeleteActivityGQL, {
+  refetchQueries: [
+    {
+      query: MyDataGQL,
+      variables: { user_id: LoginService.getLoginState().id },
+    },
+  ],
+});
 
 export const DeleteSpotUserRoleMutation = wrappedMutation<
   schema.deleteSpotUserRole,
   schema.deleteSpotUserRoleVariables
->(DeleteSpotUserRoleGQL, [
-  {
-    query: MyDataGQL,
-    variables: { user_id: LoginService.getLoginState().id },
-  },
-]);
+>(DeleteSpotUserRoleGQL, {
+  refetchQueries: [
+    {
+      query: MyDataGQL,
+      variables: { user_id: LoginService.getLoginState().id },
+    },
+  ],
+});
 
 export const DeleteSpotMutation = wrappedMutation<
   schema.deleteSpot,
   schema.deleteSpotVariables
->(DeleteSpotGQL, [
-  {
-    query: MyDataGQL,
-    variables: { user_id: LoginService.getLoginState().id },
-  },
-]);
+>(DeleteSpotGQL, {
+  refetchQueries: [
+    {
+      query: MyDataGQL,
+      variables: { user_id: LoginService.getLoginState().id },
+    },
+  ],
+});
 
 export const UpdateSpotUserRoleMutation = wrappedMutation<
   schema.updateSpotUserRole,

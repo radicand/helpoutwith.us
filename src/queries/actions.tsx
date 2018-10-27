@@ -12,9 +12,8 @@ import {
   UpdateSpotUserRoleMutation,
 } from '.';
 import LoginService from '../services/LoginService';
-import * as schema from './schema';
-
 import MyDataGQL from './myData.graphql';
+import * as schema from './schema';
 
 type Organization = schema.myData['allOrganizations'][0];
 type OrgActivity = schema.myData['allOrganizations'][0]['activities'][0];
@@ -52,40 +51,63 @@ export class SignupForSpotCombo extends React.Component<ISpotProps, {}> {
       <CreateSpotUserRoleMutation>
         {(createSpotUserRoleFunc) => (
           <UpdateSpotUserRoleMutation>
-            {(updateSpotUserRole) => {
+            {(updateSpotUserRoleFunc) => {
               async function executeMutation(spot: OrgActivitySpot) {
+                const myUserId = LoginService.getLoginState().id;
+
                 const foundSpotUser = spot.members.find((member) => {
-                  return member.user.id === LoginService.getLoginState().id;
+                  return member.user.id === myUserId;
                 });
 
                 if (!foundSpotUser) {
                   return createSpotUserRoleFunc({
                     variables: {
                       status: schema.SpotStatus.Confirmed,
-                      userId: LoginService.getLoginState().id,
+                      userId: myUserId,
                       spotId: spot.id,
-                    },
-                    optimisticResponse: {
-                      __typename: 'Mutation',
-                      createSpotUserRole: {
-                        __typename: 'SpotUserRole',
-                        status: schema.SpotStatus.Confirmed,
-                        user: {
-                          id: LoginService.getLoginState().id,
-                        },
-                      },
                     },
                     update: (proxy, { data: { createSpotUserRole } }) => {
                       // Read the data from our cache for this query.
-                      const data = proxy.readQuery({ query: MyDataGQL });
-                      // Add our comment from the mutation to the end.
-                      data.comments.push(createSpotUserRole);
+                      const data = proxy.readQuery<
+                        schema.myData,
+                        schema.myDataVariables
+                      >({
+                        query: MyDataGQL,
+                        variables: {
+                          user_id: myUserId,
+                        },
+                      });
+
+                      // Add our item from the mutation to the end.
+                      const qOrg = data.allOrganizations.find((iOrg) => {
+                        return iOrg.id === spot.activity.organization.id;
+                      });
+
+                      const qUser = qOrg.members.find((iMember) => {
+                        return iMember.user.id === myUserId;
+                      });
+
+                      const qAct = qOrg.activities.find((iAct) => {
+                        return iAct.id === spot.activity.id;
+                      });
+
+                      const qSpot = qAct.spots.find((iSpot) => {
+                        return iSpot.id === spot.id;
+                      });
+
+                      const insertItem = {
+                        ...createSpotUserRole,
+                        user: qUser.user,
+                      };
+
+                      qSpot.members.push(insertItem);
+
                       // Write our data back to the cache.
                       proxy.writeQuery({ query: MyDataGQL, data });
                     },
                   });
                 } else {
-                  return createSpotUserRoleFunc({
+                  return updateSpotUserRoleFunc({
                     variables: {
                       status: schema.SpotStatus.Confirmed,
                       id: foundSpotUser.id,
