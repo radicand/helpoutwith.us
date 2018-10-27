@@ -46,7 +46,7 @@ if (process.argv[2] === 'server') {
     tsConfig: '../tsconfig.json',
     name: 'src',
     basePath: './src',
-    //   tsLint: './tslint.json',
+    tsLint: '../tslint.json',
     yellowOnLint: true,
     shortenFilenames: true,
   });

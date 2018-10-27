@@ -55,6 +55,7 @@ Beta 2
 - [ ] Web push notifications
 - [ ] Calendar view
 - [ ] Add rolling spot deletion for > 1 year
+- [ ] Fix time when creating multiple repeating events across a timezone change date
 
   1.1
 
@@ -62,5 +63,6 @@ Beta 2
 
 Nice to have
 
+- [ ] Prisma migration
 - [ ] Reduce bundle size
 - [ ] More granular hot reloading (current just reloads page)

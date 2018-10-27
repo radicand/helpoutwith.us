@@ -6,7 +6,7 @@ class HapiLaabrPlugin {
     return {
       plugin: laabr,
       options: {
-        formats: { onPostStart: ':time :start :level :message' },
+        formats: { onPostStart: ':time :start :level :message\n' },
         tokens: { start: () => '[start]' },
         indent: 0,
         colored: true,

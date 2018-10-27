@@ -21,17 +21,12 @@ import TextField from '@material-ui/core/es/TextField';
 import withMobileDialog from '@material-ui/core/es/withMobileDialog';
 import { flatten } from '@typed/list';
 import * as luxon from 'luxon';
-import { DatePicker, DateTimePicker } from 'material-ui-pickers';
+import { DatePicker, DateTimePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
 import LuxonUtils from 'material-ui-pickers/utils/luxon-utils';
-import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 import * as React from 'react';
 import { compose } from 'react-apollo';
 import { ReactCookieProps, withCookies } from 'react-cookie';
-import {
-  CreateSpotMutation,
-  MyDataQuery,
-  UpdateSpotMutation,
-} from '../../queries';
+import { CreateSpotMutation, MyDataQuery, UpdateSpotMutation } from '../../queries';
 import LoadingComponent from '../components/LoadingComponent';
 
 const styles = (theme: Theme) => ({
