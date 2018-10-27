@@ -137,10 +137,10 @@ class WhatsOpen extends React.Component<IProps, IState> {
           <title>What's Open - {SITE_TITLE}</title>
         </Helmet>
         <div className={classes.root}>
-          <Typography variant="headline" noWrap={true}>
+          <Typography variant="h5" noWrap={true}>
             What's Open?
           </Typography>
-          <Typography variant="body1">
+          <Typography variant="body2">
             Find spots that are still in need of volunteers below.
           </Typography>
           <Grid container={true} spacing={24} className={classes.grid}>
@@ -202,9 +202,7 @@ class WhatsOpen extends React.Component<IProps, IState> {
                           return (
                             <Grid item={true} xs={true} key={spot.id}>
                               <MediaCard
-                                headline={`${luxon.DateTime.fromISO(
-                                  spot.startsAt,
-                                )
+                                title={`${luxon.DateTime.fromISO(spot.startsAt)
                                   .setZone(spot._org.timezone)
                                   .toLocaleString(
                                     FRIENDLY_DATE_FORMAT_WITH_DAYNAME,

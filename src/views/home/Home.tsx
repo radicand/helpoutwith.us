@@ -118,10 +118,10 @@ class Home extends React.Component<IProps, IState> {
           <title>Home - {SITE_TITLE}</title>
         </Helmet>
         <div className={classes.root}>
-          <Typography variant="headline" noWrap={true}>
+          <Typography variant="h5" noWrap={true}>
             Welcome!
           </Typography>
-          <Typography variant="body1">
+          <Typography variant="body2">
             Our goal is to make it as easy as possible to manage and sign up for
             volunteering opportunities. Use the navigation on the left to view
             or create organizations, activities, and spots, and{' '}

@@ -234,7 +234,7 @@ class Layout extends React.Component<IProps, IState> {
               <MenuIcon />
             </IconButton>
             <div className={classnamer(classes.flex)}>
-              <Typography color="inherit" variant="title" noWrap={true}>
+              <Typography color="inherit" variant="h6" noWrap={true}>
                 {SITE_TITLE}
               </Typography>
               <Typography color="inherit" variant="caption" noWrap={true}>
@@ -305,10 +305,10 @@ class Layout extends React.Component<IProps, IState> {
                       {this.state.drawerOpen && (
                         <Grid item={true}>
                           <div className={classes.avatarInfo}>
-                            <Typography variant="body2">
+                            <Typography variant="body1">
                               {loggedInUser.name}
                             </Typography>
-                            <Typography variant="body1">
+                            <Typography variant="body2">
                               {loggedInUser.email}
                             </Typography>
                           </div>

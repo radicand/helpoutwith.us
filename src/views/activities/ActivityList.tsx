@@ -152,10 +152,10 @@ class ActivityList extends React.Component<IProps, IState> {
           <title>Activities - {SITE_TITLE}</title>
         </Helmet>
         <div className={classes.root}>
-          <Typography variant="headline" noWrap={true}>
+          <Typography variant="h5" noWrap={true}>
             My Activities
           </Typography>
-          <Typography variant="body1">
+          <Typography variant="body2">
             View the activities you're part of here. Activities are recurring
             needs of the same type, such as "Bring dessert", or "Run
             soundboard".

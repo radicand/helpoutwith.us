@@ -130,10 +130,10 @@ class OrganizationList extends React.Component<IProps, IState> {
           <title>Organizations - {SITE_TITLE}</title>
         </Helmet>
         <div className={classes.root}>
-          <Typography variant="headline" noWrap={true}>
+          <Typography variant="h5" noWrap={true}>
             My Organizations
           </Typography>
-          <Typography variant="body1">
+          <Typography variant="body2">
             View the organizations you're part of here. Organizations are groups
             that have one or more volunteering needs. For example, "Soccer Team"
             or "Church".
@@ -156,7 +156,7 @@ class OrganizationList extends React.Component<IProps, IState> {
                                 imageLink={
                                   org.bannerImage ? org.bannerImage.url : null
                                 }
-                                headline={org.name}
+                                title={org.name}
                                 bodyText={org.description}
                                 actions={getActions(org, deleteOrganization)}
                                 members={org.members}

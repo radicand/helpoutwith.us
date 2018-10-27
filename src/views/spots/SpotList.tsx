@@ -222,10 +222,10 @@ class SpotList extends React.Component<IProps, IState> {
           <title>Spots - {SITE_TITLE}</title>
         </Helmet>
         <div className={classes.root}>
-          <Typography variant="headline" noWrap={true}>
+          <Typography variant="h5" noWrap={true}>
             My Spots
           </Typography>
-          <Typography variant="body1">
+          <Typography variant="body2">
             View the spots for activities you're a member of.
           </Typography>
           <FormControlLabel
@@ -276,7 +276,7 @@ class SpotList extends React.Component<IProps, IState> {
                                       return allOrganizations.map((org) => (
                                         <React.Fragment key={org.id}>
                                           <br />
-                                          <Typography variant="subheading">
+                                          <Typography variant="subtitle1">
                                             {org.name}
                                           </Typography>
                                           {org.activities.map((activity) => (
@@ -382,7 +382,7 @@ class SpotList extends React.Component<IProps, IState> {
                                                               <span>
                                                                 {availableSpots ===
                                                                   0 && (
-                                                                  <CheckCircleIcon fontSize="16px" />
+                                                                  <CheckCircleIcon fontSize="small" />
                                                                 )}{' '}
                                                                 {now >
                                                                 luxon.DateTime.fromISO(

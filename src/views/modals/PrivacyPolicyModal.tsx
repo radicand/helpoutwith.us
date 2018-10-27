@@ -53,22 +53,24 @@ class PrivacyPolicyModal extends React.Component<IProps, IState> {
             <DialogContentText>
               <p>
                 <strong>{SITE_TITLE}</strong> operates helpoutwith.us and may
-                operate other websites. It is {SITE_TITLE}'s
+                operate other websites. It is {SITE_TITLE}
+                's
               </p>
             </DialogContentText>
             <DialogContentText>
-              <Typography variant="subheading">Website Visitors</Typography>
+              <Typography variant="subtitle1">Website Visitors</Typography>
               <p>
                 Like most website operators, {SITE_TITLE} collects
                 non-personally-identifying information of the sort that web
                 browsers and servers typically make available, such as the
                 browser type, language preference, referring site, and the date
-                and time of each visitor request. {SITE_TITLE}'s purpose in
-                collecting non-personally identifying information is to better
-                understand how {SITE_TITLE}'s visitors use its website. From
-                time to time, {SITE_TITLE} may release
-                non-personally-identifying information in the aggregate, e.g.,
-                by publishing a report on trends in the usage of its website.
+                and time of each visitor request. {SITE_TITLE}
+                's purpose in collecting non-personally identifying information
+                is to better understand how {SITE_TITLE}
+                's visitors use its website. From time to time, {SITE_TITLE} may
+                release non-personally-identifying information in the aggregate,
+                e.g., by publishing a report on trends in the usage of its
+                website.
               </p>
               <p>
                 {SITE_TITLE} also collects potentially personally-identifying
@@ -80,15 +82,16 @@ class PrivacyPolicyModal extends React.Component<IProps, IState> {
                 disclosed to the administrators of the site.
               </p>
 
-              <Typography variant="subheading">
+              <Typography variant="subtitle1">
                 Gathering of Personally-Identifying Information
               </Typography>
               <p>
-                Certain visitors to {SITE_TITLE}'s websites choose to interact
-                with {SITE_TITLE} in ways that require {SITE_TITLE} to gather
-                personally-identifying information. The amount and type of
-                information that {SITE_TITLE} gathers depends on the nature of
-                the interaction. For example, we ask visitors who sign up at{' '}
+                Certain visitors to {SITE_TITLE}
+                's websites choose to interact with {SITE_TITLE} in ways that
+                require {SITE_TITLE} to gather personally-identifying
+                information. The amount and type of information that{' '}
+                {SITE_TITLE} gathers depends on the nature of the interaction.
+                For example, we ask visitors who sign up at{' '}
                 <a href="http://helpoutwith.us/">helpoutwith.us</a> to provide
                 an email address (and name and photo via Google or other
                 providers profile data). Those who engage in transactions with{' '}
@@ -105,9 +108,7 @@ class PrivacyPolicyModal extends React.Component<IProps, IState> {
                 activities.
               </p>
 
-              <Typography variant="subheading">
-                Aggregated Statistics
-              </Typography>
+              <Typography variant="subtitle1">Aggregated Statistics</Typography>
               <p>
                 {SITE_TITLE} may collect statistics about the behavior of
                 visitors to its websites. {SITE_TITLE} may display this
@@ -116,7 +117,7 @@ class PrivacyPolicyModal extends React.Component<IProps, IState> {
                 information other than as described below.
               </p>
 
-              <Typography variant="subheading">
+              <Typography variant="subtitle1">
                 Protection of Certain Personally-Identifying Information
               </Typography>
               <p>
@@ -124,18 +125,19 @@ class PrivacyPolicyModal extends React.Component<IProps, IState> {
                 personally-identifying information only to those of its
                 employees, contractors and affiliated organizations that (i)
                 need to know that information in order to process it on{' '}
-                {SITE_TITLE}'s behalf or to provide services available at{' '}
-                {SITE_TITLE}'s websites, and (ii) that have agreed not to
-                disclose it to others. Some of those employees, contractors and
-                affiliated organizations may be located outside of your home
-                country; by using {SITE_TITLE}'s websites, you consent to the
-                transfer of such information to them. {SITE_TITLE} will not rent
-                or sell potentially personally-identifying and
-                personally-identifying information to anyone. Other than to its
-                employees, contractors and affiliated organizations, as
-                described above, {SITE_TITLE} discloses potentially
-                personally-identifying and personally-identifying information
-                only in response to a subpoena, court order or other
+                {SITE_TITLE}
+                's behalf or to provide services available at {SITE_TITLE}
+                's websites, and (ii) that have agreed not to disclose it to
+                others. Some of those employees, contractors and affiliated
+                organizations may be located outside of your home country; by
+                using {SITE_TITLE}
+                's websites, you consent to the transfer of such information to
+                them. {SITE_TITLE} will not rent or sell potentially
+                personally-identifying and personally-identifying information to
+                anyone. Other than to its employees, contractors and affiliated
+                organizations, as described above, {SITE_TITLE} discloses
+                potentially personally-identifying and personally-identifying
+                information only in response to a subpoena, court order or other
                 governmental request, or when {SITE_TITLE} believes in good
                 faith that disclosure is reasonably necessary to protect the
                 property or rights of {SITE_TITLE}, third parties or the public
@@ -153,7 +155,7 @@ class PrivacyPolicyModal extends React.Component<IProps, IState> {
                 and personally-identifying information.
               </p>
 
-              <Typography variant="subheading">Cookies</Typography>
+              <Typography variant="subtitle1">Cookies</Typography>
               <p>
                 A cookie is a string of information that a website stores on a
                 visitor's computer, and that the visitor's browser provides to
@@ -162,12 +164,14 @@ class PrivacyPolicyModal extends React.Component<IProps, IState> {
                 usage of {SITE_TITLE} website, and their website access
                 preferences. {SITE_TITLE} visitors who do not wish to have
                 cookies placed on their computers should set their browsers to
-                refuse cookies before using {SITE_TITLE}'s websites, with the
-                drawback that certain features of {SITE_TITLE}'s websites may
-                not function properly without the aid of cookies.
+                refuse cookies before using {SITE_TITLE}
+                's websites, with the drawback that certain features of{' '}
+                {SITE_TITLE}
+                's websites may not function properly without the aid of
+                cookies.
               </p>
 
-              <Typography variant="subheading">Business Transfers</Typography>
+              <Typography variant="subtitle1">Business Transfers</Typography>
               <p>
                 If {SITE_TITLE}, or substantially all of its assets, were
                 acquired, or in the unlikely event that {SITE_TITLE} goes out of
@@ -176,7 +180,7 @@ class PrivacyPolicyModal extends React.Component<IProps, IState> {
                 acknowledge that such transfers may occur, and that any
               </p>
 
-              <Typography variant="subheading">Ads</Typography>
+              <Typography variant="subtitle1">Ads</Typography>
               <p>
                 Ads appearing on any of our websites may be delivered to users
                 by advertising partners, who may set cookies. These cookies
@@ -189,18 +193,18 @@ class PrivacyPolicyModal extends React.Component<IProps, IState> {
                 cover the use of cookies by any advertisers.
               </p>
 
-              <Typography variant="subheading">
+              <Typography variant="subtitle1">
                 Privacy Policy Changes
               </Typography>
               <p>
                 Although most changes are likely to be minor, {SITE_TITLE} may
-                change its Privacy Policy from time to time, and in {SITE_TITLE}'s
-                sole discretion. {SITE_TITLE} encourages visitors to frequently
-                check this page for any changes to its Privacy Policy. If you
-                have a helpoutwith.us account, you might also receive an alert
-                informing you of these changes. Your continued use of this site
-                after any change in this Privacy Policy will constitute your
-                acceptance of such change.
+                change its Privacy Policy from time to time, and in {SITE_TITLE}
+                's sole discretion. {SITE_TITLE} encourages visitors to
+                frequently check this page for any changes to its Privacy
+                Policy. If you have a helpoutwith.us account, you might also
+                receive an alert informing you of these changes. Your continued
+                use of this site after any change in this Privacy Policy will
+                constitute your acceptance of such change.
               </p>
             </DialogContentText>
           </DialogContent>

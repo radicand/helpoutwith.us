@@ -134,14 +134,14 @@ class Landing extends React.Component<IProps, IState> {
         >
           <Grid item={true} xs={10}>
             <Typography
-              variant="display2"
+              variant="h3"
               align="center"
               className={classes.titleText}
             >
               {SITE_TITLE}
             </Typography>
             <Typography
-              variant="headline"
+              variant="h5"
               align="center"
               className={classes.titleText}
             >

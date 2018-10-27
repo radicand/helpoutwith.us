@@ -122,17 +122,13 @@ const MediaCard = decorate<IMediaCardProps>(
               {preheader}
             </Typography>
           )}
-          {headline && (
-            <Typography variant="headline" component="h2">
-              {headline}
-            </Typography>
-          )}
+          {headline && <Typography variant="h5">{headline}</Typography>}
           {!title && subheader && <CardHeader subheader={subheader} />}
           {bodyText && <Typography component="p">{bodyText}</Typography>}
           {body}
           {members && (
             <div className={classes.avatarRow}>
-              {members.map((member) => (
+              {members.map((member: any) => (
                 <Chip
                   key={member.id}
                   color={member.role === Role.Admin ? 'primary' : 'secondary'}
@@ -161,8 +157,8 @@ const MediaCard = decorate<IMediaCardProps>(
               {absentMembers &&
                 absentMembers.length > 0 && (
                   <Paper className={classes.absent}>
-                    <Typography variant="subheading">Not Available</Typography>
-                    {absentMembers.map((member) => (
+                    <Typography variant="subtitle1">Not Available</Typography>
+                    {absentMembers.map((member: any) => (
                       <Chip
                         key={member.id}
                         color={
