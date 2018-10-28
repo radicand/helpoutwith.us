@@ -1,4 +1,5 @@
 const fs = require('fs-extra');
+const { DateTime } = require('luxon');
 const {
   EnvPlugin,
   FuseBox,
@@ -74,12 +75,12 @@ if (process.argv[2] === 'server') {
     target: 'browser@es5', // stay at es5 because uglify-es is broken
     output: 'dist/public/$name.js',
     allowSyntheticDefaultImports: true,
-
     plugins: [
       EnvPlugin({
         NODE_ENV: isProduction ? 'production' : 'development',
         GC_URL,
         GOOGLE_CLIENT_ID,
+        BUILD: DateTime.local().toFormat('yyLLddHHmmss'),
       }),
       WebIndexPlugin({
         title: 'help out with us',
@@ -96,6 +97,7 @@ if (process.argv[2] === 'server') {
           treeshake: true,
           bakeApiIntoBundle: true, //'vendor',
           removeExportsInterop: false,
+          processPolyfill: true, // fix in 3.6.0 ?
         }),
     ],
   });
