@@ -97,7 +97,6 @@ if (process.argv[2] === 'server') {
           treeshake: true,
           bakeApiIntoBundle: true, //'vendor',
           removeExportsInterop: false,
-          processPolyfill: true, // fix in 3.6.0 ?
         }),
     ],
   });
