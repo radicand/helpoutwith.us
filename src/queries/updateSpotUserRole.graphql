@@ -2,8 +2,5 @@ mutation updateSpotUserRole($id: ID!, $status: SpotStatus!, $spotId: ID) {
   updateSpotUserRole(id: $id, status: $status, spotId: $spotId) {
     id
     status
-    user {
-      id
-    }
   }
 }

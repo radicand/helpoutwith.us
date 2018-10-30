@@ -12,7 +12,6 @@ import {
   UpdateSpotUserRoleMutation,
 } from '.';
 import LoginService from '../services/LoginService';
-import MyDataGQL from './myData.graphql';
 import * as schema from './schema';
 
 type Organization = schema.myData['allOrganizations'][0];
@@ -65,45 +64,6 @@ export class SignupForSpotCombo extends React.Component<ISpotProps, {}> {
                       status: schema.SpotStatus.Confirmed,
                       userId: myUserId,
                       spotId: spot.id,
-                    },
-                    update: (proxy, { data: { createSpotUserRole } }) => {
-                      // Read the data from our cache for this query.
-                      const data = proxy.readQuery<
-                        schema.myData,
-                        schema.myDataVariables
-                      >({
-                        query: MyDataGQL,
-                        variables: {
-                          user_id: myUserId,
-                        },
-                      });
-
-                      // Add our item from the mutation to the end.
-                      const qOrg = data.allOrganizations.find((iOrg) => {
-                        return iOrg.id === spot.activity.organization.id;
-                      });
-
-                      const qUser = qOrg.members.find((iMember) => {
-                        return iMember.user.id === myUserId;
-                      });
-
-                      const qAct = qOrg.activities.find((iAct) => {
-                        return iAct.id === spot.activity.id;
-                      });
-
-                      const qSpot = qAct.spots.find((iSpot) => {
-                        return iSpot.id === spot.id;
-                      });
-
-                      const insertItem = {
-                        ...createSpotUserRole,
-                        user: qUser.user,
-                      };
-
-                      qSpot.members.push(insertItem);
-
-                      // Write our data back to the cache.
-                      proxy.writeQuery({ query: MyDataGQL, data });
                     },
                   });
                 } else {

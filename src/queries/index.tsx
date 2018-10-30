@@ -3,6 +3,7 @@ import { DocumentNode } from 'graphql';
 import * as React from 'react';
 import {
   Mutation,
+  MutationOptions,
   MutationProps,
   MutationState,
   OperationVariables,
@@ -61,7 +62,11 @@ const wrappedMutation = <P extends any, V = OperationVariables>(
   opts?: {
     refetchQueries?: MutationProps['refetchQueries'];
     variables?: V;
+    updateFunc?: (variables: V) => MutationProps['update'];
     update?: MutationProps['update'];
+    optimisticResponseFunc?: (
+      variables: V,
+    ) => MutationProps['optimisticResponse'];
     optimisticResponse?: MutationProps['optimisticResponse'];
   },
 ) => {
@@ -77,7 +82,29 @@ const wrappedMutation = <P extends any, V = OperationVariables>(
       class UnwrappedComponent extends Mutation<P, V> {}
 
       return (
-        <UnwrappedComponent mutation={mutation} {...opts} {...this.props} />
+        <UnwrappedComponent mutation={mutation} {...opts} {...this.props}>
+          {(unwrappedFunc, unwrappedResult) => {
+            const wrappedFunc = (executionOpts?: MutationOptions<P, V>) => {
+              if (executionOpts && executionOpts.variables) {
+                if (opts && opts.updateFunc) {
+                  executionOpts.update = opts.updateFunc(
+                    executionOpts.variables,
+                  );
+                }
+
+                if (opts && opts.optimisticResponseFunc) {
+                  executionOpts.optimisticResponse = opts.optimisticResponseFunc(
+                    executionOpts.variables,
+                  );
+                }
+              }
+
+              return unwrappedFunc(executionOpts);
+            };
+
+            return this.props.children(wrappedFunc, unwrappedResult);
+          }}
+        </UnwrappedComponent>
       );
     }
   };
@@ -157,17 +184,50 @@ export const CreateSpotUserRoleMutation = wrappedMutation<
   schema.createSpotUserRole,
   schema.createSpotUserRoleVariables
 >(CreateSpotUserRoleGQL, {
-  optimisticResponse: {
+  optimisticResponseFunc: (variables: schema.createSpotUserRoleVariables) => ({
     __typename: 'Mutation',
     createSpotUserRole: {
       __typename: 'SpotUserRole',
       id: `${+new Date()}`,
-      status: schema.SpotStatus.Confirmed,
+      status: variables.status,
       user: {
         __typename: 'User',
-        id: LoginService.getLoginState().id,
+        id: variables.userId,
       },
     },
+  }),
+  updateFunc: (variables: schema.createSpotUserRoleVariables) => (
+    proxy,
+    { data: { createSpotUserRole } },
+  ) => {
+    // Read the data from our cache for this query.
+    const data = proxy.readQuery<schema.myData, schema.myDataVariables>({
+      query: MyDataGQL,
+      variables: {
+        user_id: LoginService.getLoginState().id,
+      },
+    });
+
+    // Add our item from the mutation to the end.
+    data.allOrganizations.forEach((org) => {
+      org.activities.forEach((act) => {
+        const thisSpot = act.spots.find((spot) => spot.id === variables.spotId);
+        if (thisSpot) {
+          const thisUser = org.members.find(
+            (member) => member.user.id === variables.userId,
+          );
+
+          const insertItem = {
+            ...createSpotUserRole,
+            user: thisUser.user,
+          };
+          thisSpot.members.push(insertItem);
+        }
+      });
+    });
+
+    // Write our data back to the cache.
+    proxy.writeQuery({ query: MyDataGQL, data });
   },
 });
 
@@ -266,4 +326,13 @@ export const DeleteSpotMutation = wrappedMutation<
 export const UpdateSpotUserRoleMutation = wrappedMutation<
   schema.updateSpotUserRole,
   schema.updateSpotUserRoleVariables
->(UpdateSpotUserRoleGQL);
+>(UpdateSpotUserRoleGQL, {
+  optimisticResponseFunc: (variables: schema.updateSpotUserRoleVariables) => ({
+    __typename: 'Mutation',
+    createSpotUserRole: {
+      __typename: 'SpotUserRole',
+      id: `${+new Date()}`,
+      status: variables.status,
+    },
+  }),
+});

@@ -21,12 +21,20 @@ import TextField from '@material-ui/core/es/TextField';
 import withMobileDialog from '@material-ui/core/es/withMobileDialog';
 import { flatten } from '@typed/list';
 import * as luxon from 'luxon';
-import { DatePicker, DateTimePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
+import {
+  DatePicker,
+  DateTimePicker,
+  MuiPickersUtilsProvider,
+} from 'material-ui-pickers';
 import LuxonUtils from 'material-ui-pickers/utils/luxon-utils';
 import * as React from 'react';
 import { compose } from 'react-apollo';
 import { ReactCookieProps, withCookies } from 'react-cookie';
-import { CreateSpotMutation, MyDataQuery, UpdateSpotMutation } from '../../queries';
+import {
+  CreateSpotMutation,
+  MyDataQuery,
+  UpdateSpotMutation,
+} from '../../queries';
 import LoadingComponent from '../components/LoadingComponent';
 
 const styles = (theme: Theme) => ({
@@ -113,7 +121,7 @@ class SpotModal extends React.Component<IProps, IState> {
           .startOf('hour')
           .plus({ hours: 1 }),
         repeat: '',
-        repeatUntil: luxon.DateTime.local(),
+        repeatUntil: luxon.DateTime.local().plus({ days: 1 }),
         repeatSunday: '',
         repeatMonday: '',
         repeatTuesday: '',
@@ -526,14 +534,16 @@ class SpotModal extends React.Component<IProps, IState> {
       newState.startsAt = baseDate;
     }
     if (name === 'repeatUntil' && this.state.startsAt > baseDate) {
-      newState.repeatUntil = this.state.endsAt; // maybe throw error too?
+      newState.repeatUntil = this.state.endsAt.plus({ days: 1 }); // maybe throw error too?
     }
 
     if (
       name !== 'repeatUntil' &&
       (newState.startsAt || this.state.startsAt) > this.state.repeatUntil
     ) {
-      newState.repeatUntil = newState.startsAt || this.state.startsAt;
+      newState.repeatUntil = (newState.startsAt || this.state.startsAt).plus({
+        days: 1,
+      });
     }
 
     this.setState(newState);

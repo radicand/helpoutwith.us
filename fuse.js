@@ -104,7 +104,7 @@ if (process.argv[2] === 'server') {
 
   let bundler;
 
-  if (isProduction) {
+  if (true || isProduction) {
     clientFuse.bundle('vendor').instructions('~ client.tsx');
     bundler = clientFuse
       .bundle('app')
