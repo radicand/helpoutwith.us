@@ -10,6 +10,7 @@ import {
   Query,
   QueryProps,
 } from 'react-apollo';
+import uuid from 'uuid/v4';
 import LoginService from '../services/LoginService';
 import CreateActivityUserRoleGQL from './addActivityUserRole.graphql';
 import CreateOrganizationUserRoleGQL from './addOrgUserRole.graphql';
@@ -62,11 +63,11 @@ const wrappedMutation = <P extends any, V = OperationVariables>(
   opts?: {
     refetchQueries?: MutationProps['refetchQueries'];
     variables?: V;
-    updateFunc?: (variables: V) => MutationProps['update'];
+    updateFunc?: (variables: V) => MutationProps<P>['update'];
     update?: MutationProps['update'];
     optimisticResponseFunc?: (
       variables: V,
-    ) => MutationProps['optimisticResponse'];
+    ) => MutationProps<P>['optimisticResponse'];
     optimisticResponse?: MutationProps['optimisticResponse'];
   },
 ) => {
@@ -172,12 +173,66 @@ export const CreateActivityMutation = wrappedMutation<
   schema.createAct,
   schema.createActVariables
 >(CreateActivityGQL, {
-  refetchQueries: [
-    {
-      query: MyDataGQL,
-      variables: { user_id: LoginService.getLoginState().id },
+  optimisticResponseFunc: (variables: schema.createActVariables) => ({
+    __typename: 'Mutation',
+    createAct: {
+      __typename: 'CreateActPayload',
+      id: uuid(),
+      name: variables.name,
+      description: variables.description,
+      location: variables.location,
+      initialAdminMemberId: uuid(),
     },
-  ],
+  }),
+  // XXX THIS DOESNT WORK YET
+  updateFunc: (variables: schema.createActVariables) => (
+    proxy,
+    { data: { createAct } },
+  ) => {
+    // Read the data from our cache for this query.
+    const data = proxy.readQuery<schema.myData, schema.myDataVariables>({
+      query: MyDataGQL,
+      variables: {
+        user_id: LoginService.getLoginState().id,
+      },
+    });
+
+    // Add our item from the mutation to the end.
+    data.allOrganizations.forEach((org) => {
+      if (org.id === variables.organizationId) {
+        const thisUser = org.members.find(
+          (member) => member.user.id === LoginService.getLoginState().id,
+        );
+
+        if (thisUser) {
+          const insertItem = {
+            __typename: 'Activity' as 'Activity',
+            id: createAct.id,
+            name: createAct.name,
+            location: createAct.location,
+            description: createAct.description,
+            organization: {
+              __typename: 'Organization' as 'Organization',
+              id: variables.organizationId,
+            },
+            members: [
+              {
+                __typename: 'ActivityUserRole' as 'ActivityUserRole',
+                id: createAct.initialAdminMemberId,
+                role: schema.Role.Admin,
+                user: thisUser.user,
+              },
+            ],
+            spots: [] as any,
+          };
+          org.activities.push(insertItem);
+        }
+      }
+    });
+
+    // Write our data back to the cache.
+    proxy.writeQuery({ query: MyDataGQL, data });
+  },
 });
 
 export const CreateSpotUserRoleMutation = wrappedMutation<
@@ -188,7 +243,7 @@ export const CreateSpotUserRoleMutation = wrappedMutation<
     __typename: 'Mutation',
     createSpotUserRole: {
       __typename: 'SpotUserRole',
-      id: `${+new Date()}`,
+      id: uuid(),
       status: variables.status,
       user: {
         __typename: 'User',
@@ -255,72 +310,224 @@ export const DeleteOrganizationUserRoleMutation = wrappedMutation<
   schema.deleteOrganizationUserRole,
   schema.deleteOrganizationUserRoleVariables
 >(DeleteOrganizationUserRoleGQL, {
-  refetchQueries: [
-    {
-      query: MyDataGQL,
-      variables: { user_id: LoginService.getLoginState().id },
+  optimisticResponseFunc: (
+    variables: schema.deleteOrganizationUserRoleVariables,
+  ) => ({
+    __typename: 'Mutation',
+    deleteOrganizationUserRole: {
+      __typename: 'OrganizationUserRole',
+      id: variables.id,
     },
-  ],
+  }),
+  update: (proxy, { data: { deleteOrganizationUserRole } }) => {
+    // Read the data from our cache for this query.
+    const data = proxy.readQuery<schema.myData, schema.myDataVariables>({
+      query: MyDataGQL,
+      variables: {
+        user_id: LoginService.getLoginState().id,
+      },
+    });
+
+    // Remove the item
+    data.allOrganizations.forEach((org) => {
+      const thisItemIndex = org.members.findIndex(
+        (item) => item.id === deleteOrganizationUserRole.id,
+      );
+
+      if (thisItemIndex >= 0) {
+        org.members.splice(thisItemIndex, 1);
+      }
+    });
+
+    // Write our data back to the cache.
+    proxy.writeQuery({ query: MyDataGQL, data });
+  },
 });
 
 export const DeleteOrganizationMutation = wrappedMutation<
   schema.deleteOrganization,
   schema.deleteOrganizationVariables
 >(DeleteOrganizationGQL, {
-  refetchQueries: [
-    {
-      query: MyDataGQL,
-      variables: { user_id: LoginService.getLoginState().id },
+  optimisticResponseFunc: (variables: schema.deleteOrganizationVariables) => ({
+    __typename: 'Mutation',
+    deleteOrganization: {
+      __typename: 'Organization',
+      id: variables.id,
     },
-  ],
+  }),
+  update: (proxy, { data: { deleteOrganization } }) => {
+    // Read the data from our cache for this query.
+    const data = proxy.readQuery<schema.myData, schema.myDataVariables>({
+      query: MyDataGQL,
+      variables: {
+        user_id: LoginService.getLoginState().id,
+      },
+    });
+
+    // Remove the item
+    const thisItemIndex = data.allOrganizations.findIndex(
+      (item) => item.id === deleteOrganization.id,
+    );
+
+    if (thisItemIndex >= 0) {
+      data.allOrganizations.splice(thisItemIndex, 1);
+    }
+
+    // Write our data back to the cache.
+    proxy.writeQuery({ query: MyDataGQL, data });
+  },
 });
 
 export const DeleteActivityUserRoleMutation = wrappedMutation<
   schema.deleteActivityUserRole,
   schema.deleteActivityUserRoleVariables
 >(DeleteActivityUserRoleGQL, {
-  refetchQueries: [
-    {
-      query: MyDataGQL,
-      variables: { user_id: LoginService.getLoginState().id },
+  optimisticResponseFunc: (
+    variables: schema.deleteActivityUserRoleVariables,
+  ) => ({
+    __typename: 'Mutation',
+    deleteActivityUserRole: {
+      __typename: 'ActivityUserRole',
+      id: variables.id,
     },
-  ],
+  }),
+  update: (proxy, { data: { deleteActivityUserRole } }) => {
+    // Read the data from our cache for this query.
+    const data = proxy.readQuery<schema.myData, schema.myDataVariables>({
+      query: MyDataGQL,
+      variables: {
+        user_id: LoginService.getLoginState().id,
+      },
+    });
+
+    // Remove the item
+    data.allOrganizations.forEach((org) => {
+      org.activities.forEach((act) => {
+        const thisItemIndex = act.members.findIndex(
+          (item) => item.id === deleteActivityUserRole.id,
+        );
+
+        if (thisItemIndex >= 0) {
+          act.members.splice(thisItemIndex, 1);
+        }
+      });
+    });
+
+    // Write our data back to the cache.
+    proxy.writeQuery({ query: MyDataGQL, data });
+  },
 });
 
 export const DeleteActivityMutation = wrappedMutation<
   schema.deleteActivity,
   schema.deleteActivityVariables
 >(DeleteActivityGQL, {
-  refetchQueries: [
-    {
-      query: MyDataGQL,
-      variables: { user_id: LoginService.getLoginState().id },
+  optimisticResponseFunc: (variables: schema.deleteActivityVariables) => ({
+    __typename: 'Mutation',
+    deleteActivity: {
+      __typename: 'Activity',
+      id: variables.id,
     },
-  ],
+  }),
+  update: (proxy, { data: { deleteActivity } }) => {
+    // Read the data from our cache for this query.
+    const data = proxy.readQuery<schema.myData, schema.myDataVariables>({
+      query: MyDataGQL,
+      variables: {
+        user_id: LoginService.getLoginState().id,
+      },
+    });
+
+    // Remove the item
+    data.allOrganizations.forEach((org) => {
+      const thisItemIndex = org.activities.findIndex(
+        (item) => item.id === deleteActivity.id,
+      );
+
+      if (thisItemIndex >= 0) {
+        org.activities.splice(thisItemIndex, 1);
+      }
+    });
+
+    // Write our data back to the cache.
+    proxy.writeQuery({ query: MyDataGQL, data });
+  },
 });
 
 export const DeleteSpotUserRoleMutation = wrappedMutation<
   schema.deleteSpotUserRole,
   schema.deleteSpotUserRoleVariables
 >(DeleteSpotUserRoleGQL, {
-  refetchQueries: [
-    {
-      query: MyDataGQL,
-      variables: { user_id: LoginService.getLoginState().id },
+  optimisticResponseFunc: (variables: schema.deleteSpotUserRoleVariables) => ({
+    __typename: 'Mutation',
+    deleteSpotUserRole: {
+      __typename: 'SpotUserRole',
+      id: variables.id,
     },
-  ],
+  }),
+  update: (proxy, { data: { deleteSpotUserRole } }) => {
+    // Read the data from our cache for this query.
+    const data = proxy.readQuery<schema.myData, schema.myDataVariables>({
+      query: MyDataGQL,
+      variables: {
+        user_id: LoginService.getLoginState().id,
+      },
+    });
+
+    // Remove the item
+    data.allOrganizations.forEach((org) => {
+      org.activities.forEach((act) => {
+        act.spots.forEach((spot) => {
+          const thisSpotMemberIndex = spot.members.findIndex(
+            (member) => member.id === deleteSpotUserRole.id,
+          );
+          if (thisSpotMemberIndex >= 0) {
+            spot.members.splice(thisSpotMemberIndex, 1);
+          }
+        });
+      });
+    });
+
+    // Write our data back to the cache.
+    proxy.writeQuery({ query: MyDataGQL, data });
+  },
 });
 
 export const DeleteSpotMutation = wrappedMutation<
   schema.deleteSpot,
   schema.deleteSpotVariables
 >(DeleteSpotGQL, {
-  refetchQueries: [
-    {
-      query: MyDataGQL,
-      variables: { user_id: LoginService.getLoginState().id },
+  optimisticResponseFunc: (variables: schema.deleteSpotVariables) => ({
+    __typename: 'Mutation',
+    deleteSpot: {
+      __typename: 'Spot',
+      id: variables.id,
     },
-  ],
+  }),
+  update: (proxy, { data: { deleteSpot } }) => {
+    // Read the data from our cache for this query.
+    const data = proxy.readQuery<schema.myData, schema.myDataVariables>({
+      query: MyDataGQL,
+      variables: {
+        user_id: LoginService.getLoginState().id,
+      },
+    });
+
+    // Remove the item
+    data.allOrganizations.forEach((org) => {
+      org.activities.forEach((act) => {
+        const thisSpotIndex = act.spots.findIndex(
+          (spot) => spot.id === deleteSpot.id,
+        );
+        if (thisSpotIndex >= 0) {
+          act.spots.splice(thisSpotIndex, 1);
+        }
+      });
+    });
+
+    // Write our data back to the cache.
+    proxy.writeQuery({ query: MyDataGQL, data });
+  },
 });
 
 export const UpdateSpotUserRoleMutation = wrappedMutation<
@@ -329,9 +536,9 @@ export const UpdateSpotUserRoleMutation = wrappedMutation<
 >(UpdateSpotUserRoleGQL, {
   optimisticResponseFunc: (variables: schema.updateSpotUserRoleVariables) => ({
     __typename: 'Mutation',
-    createSpotUserRole: {
+    updateSpotUserRole: {
       __typename: 'SpotUserRole',
-      id: `${+new Date()}`,
+      id: variables.id,
       status: variables.status,
     },
   }),

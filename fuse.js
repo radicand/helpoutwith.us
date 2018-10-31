@@ -103,14 +103,10 @@ if (process.argv[2] === 'server') {
 
   let bundler;
 
-  if (true || isProduction) {
-    clientFuse.bundle('vendor').instructions('~ client.tsx');
-    bundler = clientFuse
-      .bundle('app')
-      .instructions('!> [client.tsx] + queries/*');
-  } else {
-    bundler = clientFuse.bundle('app').instructions('> client.tsx');
-  }
+  clientFuse.bundle('vendor').instructions('~ client.tsx');
+  bundler = clientFuse
+    .bundle('app')
+    .instructions('!> [client.tsx] + queries/*');
 
   if (isProduction) {
     bundler.completed(() => {
