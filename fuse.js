@@ -70,7 +70,7 @@ if (process.argv[2] === 'server') {
   // fuse config
   const clientFuse = FuseBox.init({
     cache: !isProduction,
-    sourceMaps: true,
+    sourceMaps: !isProduction ? { sourceRoot: '../' } : false,
     homeDir: 'src/',
     target: 'browser@es5', // stay at es5 because uglify-es is broken
     output: 'dist/public/$name.js',

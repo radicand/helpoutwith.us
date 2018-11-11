@@ -1,3 +1,4 @@
+import LuxonUtils from '@date-io/luxon';
 import Button from '@material-ui/core/es/Button';
 import Checkbox from '@material-ui/core/es/Checkbox';
 import Dialog from '@material-ui/core/es/Dialog';
@@ -26,7 +27,6 @@ import {
   DateTimePicker,
   MuiPickersUtilsProvider,
 } from 'material-ui-pickers';
-import LuxonUtils from 'material-ui-pickers/utils/luxon-utils';
 import * as React from 'react';
 import { compose } from 'react-apollo';
 import { ReactCookieProps, withCookies } from 'react-cookie';

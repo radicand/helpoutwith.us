@@ -40,7 +40,7 @@ Beta 2
 - [x] Google calendar integration
 - [x] Remove user from spot (admin) # delete the entry, don't cancel
 - [x] Remove user from org/activity
-- [ ] Better handling for slow connections on actions / optimistic UI
+- [x] Better handling for slow connections on actions / optimistic UI
 - [ ] Grid view for who's on when summaries
 - [ ] Show other people who are volunteering for the same day/organization when sending email notification
 

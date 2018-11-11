@@ -16,28 +16,6 @@ mutation createSpot(
     startsAt
     endsAt
     location
-    members {
-      id
-      user {
-        id
-      }
-      status
-    }
     numberNeeded
-    activity {
-      id
-      name
-      location
-      organization {
-        name
-        id
-      }
-      members {
-        role
-        user {
-          id
-        }
-      }
-    }
   }
 }
