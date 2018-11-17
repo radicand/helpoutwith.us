@@ -72,7 +72,7 @@ if (process.argv[2] === 'server') {
     cache: !isProduction,
     sourceMaps: !isProduction ? { sourceRoot: '../' } : false,
     homeDir: 'src/',
-    target: 'browser@es5', // stay at es5 because uglify-es is broken
+    target: 'browser@es6', // es5 because es6 is producing broken builds
     output: 'dist/public/$name.js',
     allowSyntheticDefaultImports: true,
     plugins: [

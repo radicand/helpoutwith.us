@@ -436,7 +436,19 @@ export const UpdateActivityMutation = wrappedMutation<
 export const UpdateSpotMutation = wrappedMutation<
   schema.updateSpot,
   schema.updateSpotVariables
->(UpdateSpotGQL);
+>(UpdateSpotGQL, {
+  optimisticResponseFunc: (variables: schema.updateSpotVariables) => ({
+    __typename: 'Mutation',
+    updateSpot: {
+      __typename: 'Spot',
+      id: variables.id,
+      numberNeeded: variables.numberNeeded,
+      startsAt: variables.startsAt,
+      endsAt: variables.endsAt,
+      location: variables.location || '',
+    },
+  }),
+});
 
 export const SigninUserMutation = wrappedMutation<
   schema.SigninUser,
