@@ -125,6 +125,8 @@ export const CreateOrganizationUserRoleMutation = wrappedMutation<
   schema.addOrgUserRole,
   schema.addOrgUserRoleVariables
 >(CreateOrganizationUserRoleGQL, {
+  // do this for now since we don't know enough about a new user
+  // revisit later.
   refetchQueries: [
     {
       query: MyDataGQL,
@@ -137,19 +139,59 @@ export const CreateActivityUserRoleMutation = wrappedMutation<
   schema.addActivityUserRole,
   schema.addActivityUserRoleVariables
 >(CreateActivityUserRoleGQL, {
-  refetchQueries: [
-    {
+  optimisticResponseFunc: (variables: schema.addActivityUserRoleVariables) => ({
+    __typename: 'Mutation',
+    addActivityUserRole: {
+      __typename: 'AddActivityUserRolePayload',
+      activityUserRoleId: uuid(),
+    },
+  }),
+  updateFunc: (variables: schema.addActivityUserRoleVariables) => (
+    proxy,
+    { data: { addActivityUserRole } },
+  ) => {
+    // Read the data from our cache for this query.
+    const data = proxy.readQuery<schema.myData, schema.myDataVariables>({
+      query: MyDataGQL,
+      variables: {
+        user_id: LoginService.getLoginState().id,
+      },
+    });
+
+    // Add our item from the mutation to the end.
+    data.allOrganizations.forEach((org) => {
+      const thisAct = org.activities.find(
+        (act) => act.id === variables.activityId,
+      );
+      if (thisAct) {
+        const thisUser = org.members.find(
+          (member) => member.user.id === variables.userId,
+        );
+
+        const insertItem = {
+          __typename: 'ActivityUserRole' as 'ActivityUserRole',
+          id: addActivityUserRole.activityUserRoleId,
+          role: variables.role as schema.myData_allOrganizations_activities_members['role'],
+          user: thisUser.user,
+        };
+
+        thisAct.members.push(insertItem);
+      }
+    });
+
+    // Write our data back to the cache.
+    proxy.writeQuery<schema.myData, schema.myDataVariables>({
       query: MyDataGQL,
       variables: { user_id: LoginService.getLoginState().id },
-    },
-  ],
+      data,
+    });
+  },
 });
 
 export const CreateSpotMutation = wrappedMutation<
   schema.createSpot,
   schema.createSpotVariables
 >(CreateSpotGQL, {
-  // XXX TEST ME
   optimisticResponseFunc: (variables: schema.createSpotVariables) => {
     return {
       __typename: 'Mutation',
@@ -168,7 +210,6 @@ export const CreateSpotMutation = wrappedMutation<
       },
     };
   },
-  // XXX TEST ME
   updateFunc: (variables: schema.createSpotVariables) => (
     proxy,
     { data: { createSpot } },
@@ -240,7 +281,6 @@ export const CreateOrganizationMutation = wrappedMutation<
       initialAdminMemberId: uuid(),
     },
   }),
-  // XXX TEST ME
   updateFunc: (variables: schema.createOrgVariables) => (
     proxy,
     { data: { createOrg } },
@@ -310,7 +350,6 @@ export const CreateActivityMutation = wrappedMutation<
       initialAdminMemberId: uuid(),
     },
   }),
-  // XXX TEST ME
   updateFunc: (variables: schema.createActVariables) => (
     proxy,
     { data: { createAct } },
@@ -426,12 +465,36 @@ export const CreateSpotUserRoleMutation = wrappedMutation<
 export const UpdateOrganizationMutation = wrappedMutation<
   schema.updateOrganization,
   schema.updateOrganizationVariables
->(UpdateOrganizationGQL);
+>(UpdateOrganizationGQL, {
+  optimisticResponseFunc: (variables: schema.updateOrganizationVariables) => ({
+    __typename: 'Mutation',
+    updateOrganization: {
+      __typename: 'Organization',
+      id: variables.id,
+      name: variables.name,
+      description: variables.description,
+      location: variables.location,
+      timezone: variables.timezone,
+      link: variables.link,
+    },
+  }),
+});
 
 export const UpdateActivityMutation = wrappedMutation<
   schema.updateActivity,
   schema.updateActivityVariables
->(UpdateActivityGQL);
+>(UpdateActivityGQL, {
+  optimisticResponseFunc: (variables: schema.updateActivityVariables) => ({
+    __typename: 'Mutation',
+    updateActivity: {
+      __typename: 'Activity',
+      id: variables.id,
+      name: variables.name,
+      description: variables.description,
+      location: variables.location,
+    },
+  }),
+});
 
 export const UpdateSpotMutation = wrappedMutation<
   schema.updateSpot,

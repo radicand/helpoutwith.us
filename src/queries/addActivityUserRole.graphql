@@ -1,8 +1,5 @@
 mutation addActivityUserRole($activityId: ID!, $userId: ID!, $role: String!) {
   addActivityUserRole(role: $role, activityId: $activityId, userId: $userId) {
-    userId
-    activityId
-    role
     activityUserRoleId
   }
 }
