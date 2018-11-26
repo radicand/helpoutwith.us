@@ -10,6 +10,7 @@ import InputLabel from '@material-ui/core/es/InputLabel';
 import MenuItem from '@material-ui/core/es/MenuItem';
 import Select from '@material-ui/core/es/Select';
 import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
+import createStyles from '@material-ui/core/es/styles/createStyles';
 import withStyles, { WithStyles } from '@material-ui/core/es/styles/withStyles';
 import withMobileDialog from '@material-ui/core/es/withMobileDialog';
 import * as React from 'react';
@@ -17,17 +18,18 @@ import { compose } from 'react-apollo';
 import { CreateActivityUserRoleMutation } from '../../queries';
 import { myData, Role } from '../../queries/schema';
 
-const styles = (theme: Theme) => ({
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: 200,
-  },
-  formControl: {
-    margin: theme.spacing.unit,
-    minWidth: 200,
-  },
-});
+const styles = (theme: Theme) =>
+  createStyles({
+    textField: {
+      marginLeft: theme.spacing.unit,
+      marginRight: theme.spacing.unit,
+      width: 200,
+    },
+    formControl: {
+      margin: theme.spacing.unit,
+      minWidth: 200,
+    },
+  });
 
 export interface IState {
   id?: string;
@@ -43,7 +45,7 @@ interface IOProps {
   activity: myData['allOrganizations'][0]['activities'][0];
 }
 
-type IIProps = WithStyles<'textField' | 'formControl'>;
+type IIProps = WithStyles<typeof styles>;
 
 export type IProps = IOProps & IIProps;
 

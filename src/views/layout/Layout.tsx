@@ -8,20 +8,18 @@ import ListItem from '@material-ui/core/es/ListItem';
 import ListItemIcon from '@material-ui/core/es/ListItemIcon';
 import ListItemText from '@material-ui/core/es/ListItemText';
 import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
-import withStyles, {
-  StyleRules,
-  WithStyles,
-} from '@material-ui/core/es/styles/withStyles';
+import createStyles from '@material-ui/core/es/styles/createStyles';
+import withStyles, { WithStyles } from '@material-ui/core/es/styles/withStyles';
 import SwipeableDrawer from '@material-ui/core/es/SwipeableDrawer';
 import Toolbar from '@material-ui/core/es/Toolbar';
 import Typography from '@material-ui/core/es/Typography';
+import BeachAccessIcon from '@material-ui/icons/BeachAccess';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import GroupIcon from '@material-ui/icons/Group';
 import GroupworkIcon from '@material-ui/icons/GroupWork';
 import HomeIcon from '@material-ui/icons/Home';
-import ListIcon from '@material-ui/icons/List';
+import LiveHelpIcon from '@material-ui/icons/LiveHelp';
 import MenuIcon from '@material-ui/icons/Menu';
 import SecurityIcon from '@material-ui/icons/Security';
 import TodayIcon from '@material-ui/icons/Today';
@@ -37,26 +35,7 @@ import GoogleSignIn from '../components/GoogleSignIn';
 import LoadingComponent from '../components/LoadingComponent';
 import PrivacyPolicyModal from '../modals/PrivacyPolicyModal';
 
-type IProps = WithStyles<
-  | 'root'
-  | 'appFrame'
-  | 'appBar'
-  | 'appBarShift'
-  | 'menuButton'
-  | 'flex'
-  | 'hide'
-  | 'drawerPaper'
-  | 'drawerPaperClose'
-  | 'drawerInner'
-  | 'drawerHeader'
-  | 'content'
-  | 'avatar'
-  | 'bigAvatar'
-  | 'avatarRow'
-  | 'avatarInfo'
-  | 'menuButtonList'
-> &
-  RouteComponentProps<{}>;
+type IProps = WithStyles<typeof styles> & RouteComponentProps<{}>;
 
 export interface IState {
   modalPrivacyOpen?: boolean;
@@ -66,8 +45,8 @@ export interface IState {
 const drawerWidth = 240;
 const drawerWidthClosed = 56;
 
-const styles = (theme: Theme) => {
-  const myStyle: StyleRules = {
+const styles = (theme: Theme) =>
+  createStyles({
     root: {
       flexGrow: 1,
       position: 'relative',
@@ -196,10 +175,7 @@ const styles = (theme: Theme) => {
     menuButtonList: {
       paddingRight: '16px',
     },
-  };
-
-  return myStyle;
-};
+  });
 
 class Layout extends React.Component<IProps, IState> {
   private googleUser: any;
@@ -212,7 +188,7 @@ class Layout extends React.Component<IProps, IState> {
     };
   }
   public render() {
-    const { classes, theme } = this.props;
+    const { classes } = this.props;
 
     return (
       <div className={classes.appFrame}>
@@ -278,11 +254,7 @@ class Layout extends React.Component<IProps, IState> {
                         />
                       </div>
                       <IconButton onClick={this.handleDrawerClose}>
-                        {theme.direction === 'rtl' ? (
-                          <ChevronRightIcon />
-                        ) : (
-                          <ChevronLeftIcon />
-                        )}
+                        <ChevronLeftIcon />
                       </IconButton>
                     </div>
 
@@ -334,6 +306,15 @@ class Layout extends React.Component<IProps, IState> {
                         onClick={this.goto.bind(this, '/open')}
                       >
                         <ListItemIcon>
+                          <LiveHelpIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Who What When" />
+                      </ListItem>
+                      <ListItem
+                        button={true}
+                        onClick={this.goto.bind(this, '/open')}
+                      >
+                        <ListItemIcon>
                           <TodayIcon />
                         </ListItemIcon>
                         <ListItemText primary="What's Open" />
@@ -355,7 +336,7 @@ class Layout extends React.Component<IProps, IState> {
                         onClick={this.goto.bind(this, '/activities')}
                       >
                         <ListItemIcon>
-                          <ListIcon />
+                          <BeachAccessIcon />
                         </ListItemIcon>
                         <ListItemText primary="Activities" />
                       </ListItem>

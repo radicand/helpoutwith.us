@@ -8,10 +8,8 @@ import List from '@material-ui/core/es/List';
 import ListItem from '@material-ui/core/es/ListItem';
 import ListItemText from '@material-ui/core/es/ListItemText';
 import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
-import withStyles, {
-  StyleRules,
-  WithStyles,
-} from '@material-ui/core/es/styles/withStyles';
+import createStyles from '@material-ui/core/es/styles/createStyles';
+import withStyles, { WithStyles } from '@material-ui/core/es/styles/withStyles';
 import Switch from '@material-ui/core/es/Switch';
 import Typography from '@material-ui/core/es/Typography';
 import AddIcon from '@material-ui/icons/Add';
@@ -21,8 +19,6 @@ import EditIcon from '@material-ui/icons/Edit';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import * as luxon from 'luxon';
 import * as React from 'react';
-import { compose } from 'react-apollo';
-import { ReactCookieProps, withCookies } from 'react-cookie';
 import { Helmet } from 'react-helmet';
 import { RouteComponentProps } from 'react-router-dom';
 import { SITE_TITLE } from '../../constants/System';
@@ -36,15 +32,12 @@ import {
   SignupForSpotCombo,
 } from '../../queries/actions';
 import { myData, Role, SpotStatus } from '../../queries/schema';
+import LoginService from '../../services/LoginService';
 import MediaCard from '../components/cards/MediaCard';
 import LoadingComponent from '../components/LoadingComponent';
 import SpotModal from '../modals/SpotModal';
 
-type IProps = WithStyles<
-  'root' | 'paper' | 'table' | 'addButton' | 'expansionHeading' | 'notAvailable'
-> &
-  RouteComponentProps<{}> &
-  ReactCookieProps;
+type IProps = WithStyles<typeof styles> & RouteComponentProps<{}>;
 
 interface IState {
   modalSpot: OrgActivitySpot;
@@ -60,8 +53,8 @@ type OrgActivitySpot = myData['allOrganizations'][0]['activities'][0]['spots'][0
 type OrgActivity = myData['allOrganizations'][0]['activities'][0];
 type Organization = myData['allOrganizations'][0];
 
-const styles = (theme: Theme) => {
-  const myStyle: StyleRules = {
+const styles = (theme: Theme) =>
+  createStyles({
     root: {
       flexGrow: 1,
       marginTop: 30,
@@ -87,10 +80,7 @@ const styles = (theme: Theme) => {
     notAvailable: {
       backgroundColor: 'rgba(255,0,0,.075)',
     },
-  };
-
-  return myStyle;
-};
+  });
 
 class SpotList extends React.Component<IProps, IState> {
   constructor(props: IProps) {
@@ -138,14 +128,14 @@ class SpotList extends React.Component<IProps, IState> {
           return !!activity.members.find((member) => {
             return (
               member.role === Role.Admin &&
-              member.user.id === this.props.cookies.get('id')
+              member.user.id === LoginService.getLoginState().id
             );
           });
         } else if (kind.label === 'Remove') {
           return !!activity.members.find((member) => {
             return (
               member.role === Role.Admin &&
-              member.user.id === this.props.cookies.get('id')
+              member.user.id === LoginService.getLoginState().id
             );
           });
         } else {
@@ -255,7 +245,7 @@ class SpotList extends React.Component<IProps, IState> {
                     (activity) =>
                       !!activity.members.find(
                         (member) =>
-                          member.user.id === this.props.cookies.get('id') &&
+                          member.user.id === LoginService.getLoginState().id &&
                           member.role === Role.Admin,
                       ),
                   ),
@@ -364,15 +354,15 @@ class SpotList extends React.Component<IProps, IState> {
                                                                   .toFormat(
                                                                     'DD',
                                                                   ) ===
-                                                                luxon.DateTime.fromISO(
-                                                                  spot.endsAt,
-                                                                )
-                                                                  .setZone(
-                                                                    org.timezone,
+                                                                  luxon.DateTime.fromISO(
+                                                                    spot.endsAt,
                                                                   )
-                                                                  .toFormat(
-                                                                    'DD',
-                                                                  )
+                                                                    .setZone(
+                                                                      org.timezone,
+                                                                    )
+                                                                    .toFormat(
+                                                                      'DD',
+                                                                    )
                                                                   ? luxon
                                                                       .DateTime
                                                                       .TIME_SIMPLE
@@ -515,7 +505,7 @@ class SpotList extends React.Component<IProps, IState> {
 
   private _getSpotUser = (spot: OrgActivitySpot) => {
     return spot.members.find((member) => {
-      return member.user.id === this.props.cookies.get('id');
+      return member.user.id === LoginService.getLoginState().id;
     });
   };
 
@@ -545,7 +535,4 @@ class SpotList extends React.Component<IProps, IState> {
   };
 }
 
-export default compose(
-  withCookies,
-  withStyles(styles),
-)(SpotList);
+export default withStyles(styles)(SpotList);

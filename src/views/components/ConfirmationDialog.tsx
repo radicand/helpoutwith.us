@@ -14,7 +14,7 @@ export interface IProps {
   confirmAction: () => void;
 }
 
-class ConfirmationDialog extends React.Component<IProps, {}> {
+class ConfirmationDialog extends React.PureComponent<IProps, {}> {
   public render() {
     return (
       <Dialog

@@ -1,18 +1,14 @@
 import Button from '@material-ui/core/es/Button';
 import Grid from '@material-ui/core/es/Grid';
 import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
-import withStyles, {
-  StyleRules,
-  WithStyles,
-} from '@material-ui/core/es/styles/withStyles';
+import createStyles from '@material-ui/core/es/styles/createStyles';
+import withStyles, { WithStyles } from '@material-ui/core/es/styles/withStyles';
 import Typography from '@material-ui/core/es/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import * as React from 'react';
-import { compose } from 'react-apollo';
-import { ReactCookieProps, withCookies } from 'react-cookie';
 import { Helmet } from 'react-helmet';
 import { RouteComponentProps } from 'react-router-dom';
 import { SITE_TITLE } from '../../constants/System';
@@ -28,9 +24,7 @@ import LoadingComponent from '../components/LoadingComponent';
 import OrganizationModal from '../modals/OrganizationModal';
 import OrganizationUserRoleModal from '../modals/OrganizationUserRoleModal';
 
-type IProps = WithStyles<'root' | 'paper' | 'table' | 'addButton' | 'grid'> &
-  RouteComponentProps<{}> &
-  ReactCookieProps;
+type IProps = WithStyles<typeof styles> & RouteComponentProps<{}>;
 
 interface IState {
   modalOrgOpen: boolean;
@@ -40,8 +34,8 @@ interface IState {
 
 type Organization = myData['allOrganizations'][0];
 
-const styles = (theme: Theme) => {
-  const myStyle: StyleRules = {
+const styles = (theme: Theme) =>
+  createStyles({
     root: {
       flexGrow: 1,
       marginTop: 30,
@@ -63,10 +57,7 @@ const styles = (theme: Theme) => {
     grid: {
       marginTop: theme.spacing.unit * 2,
     },
-  };
-
-  return myStyle;
-};
+  });
 
 class OrganizationList extends React.Component<IProps, IState> {
   constructor(props: IProps) {
@@ -107,7 +98,7 @@ class OrganizationList extends React.Component<IProps, IState> {
       const isAdmin = (member: typeof org.members[0]) => {
         return (
           member.role === Role.Admin &&
-          member.user.id === this.props.cookies.get('id')
+          member.user.id === LoginService.getLoginState().id
         );
       };
 
@@ -256,7 +247,4 @@ class OrganizationList extends React.Component<IProps, IState> {
   };
 }
 
-export default compose(
-  withCookies,
-  withStyles(styles, { withTheme: true }),
-)(OrganizationList);
+export default withStyles(styles, { withTheme: true })(OrganizationList);

@@ -8,6 +8,7 @@ import ListItemSecondaryAction from '@material-ui/core/es/ListItemSecondaryActio
 import ListItemText from '@material-ui/core/es/ListItemText';
 import ListSubheader from '@material-ui/core/es/ListSubheader';
 import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
+import createStyles from '@material-ui/core/es/styles/createStyles';
 import withStyles, { WithStyles } from '@material-ui/core/es/styles/withStyles';
 import Typography from '@material-ui/core/es/Typography';
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -19,7 +20,6 @@ import SyncIcon from '@material-ui/icons/Sync';
 import { groupBy, map } from '@typed/list';
 import * as luxon from 'luxon';
 import * as React from 'react';
-import { compose } from 'react-apollo';
 import { Helmet } from 'react-helmet';
 import { SITE_TITLE } from '../../constants/System';
 import { FRIENDLY_DATE_FORMAT_WITH_DAYNAME } from '../../constants/Time';
@@ -44,23 +44,24 @@ interface IState {
   spotToCancel?: any; // LAZY
 }
 
-type IProps = WithStyles<'root' | 'listRoot' | 'nested'>;
+type IProps = WithStyles<typeof styles>;
 
-const styles = (theme: Theme) => ({
-  root: {
-    flexGrow: 1,
-    marginTop: 30,
-    padding: theme.spacing.unit * 4,
-  },
-  listRoot: {
-    width: '100%',
-    // maxWidth: 360,
-    background: theme.palette.background.paper,
-  },
-  nested: {
-    paddingLeft: theme.spacing.unit * 4,
-  },
-});
+const styles = (theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1,
+      marginTop: 30,
+      padding: theme.spacing.unit * 4,
+    },
+    listRoot: {
+      width: '100%',
+      // maxWidth: 360,
+      background: theme.palette.background.paper,
+    },
+    nested: {
+      paddingLeft: theme.spacing.unit * 4,
+    },
+  });
 
 class Home extends React.Component<IProps, IState> {
   constructor(props: IProps) {
@@ -280,4 +281,4 @@ class Home extends React.Component<IProps, IState> {
   };
 }
 
-export default compose(withStyles(styles, { withTheme: true }))(Home);
+export default withStyles(styles, { withTheme: true })(Home);

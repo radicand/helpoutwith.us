@@ -5,6 +5,7 @@ import DialogContent from '@material-ui/core/es/DialogContent';
 import DialogContentText from '@material-ui/core/es/DialogContentText';
 import DialogTitle from '@material-ui/core/es/DialogTitle';
 import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
+import createStyles from '@material-ui/core/es/styles/createStyles';
 import withStyles, { WithStyles } from '@material-ui/core/es/styles/withStyles';
 import Typography from '@material-ui/core/es/Typography';
 import withMobileDialog from '@material-ui/core/es/withMobileDialog';
@@ -12,19 +13,20 @@ import * as React from 'react';
 import { compose } from 'react-apollo';
 import { SITE_TITLE } from '../../constants/System';
 
-const styles = (theme: Theme) => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap' as 'wrap',
-  },
-});
+const styles = (theme: Theme) =>
+  createStyles({
+    container: {
+      display: 'flex',
+      flexWrap: 'wrap' as 'wrap',
+    },
+  });
 
 export interface IIProps {
   handleClose: () => void;
   isOpen: boolean;
 }
 
-type IProps = IIProps & WithStyles<'container'>;
+type IProps = IIProps & WithStyles<typeof styles>;
 
 interface IState {}
 

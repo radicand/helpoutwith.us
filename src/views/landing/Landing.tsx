@@ -2,10 +2,8 @@ import Grid from '@material-ui/core/es/Grid';
 import IconButton from '@material-ui/core/es/IconButton';
 import Snackbar from '@material-ui/core/es/Snackbar';
 import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
-import withStyles, {
-  StyleRules,
-  WithStyles,
-} from '@material-ui/core/es/styles/withStyles';
+import createStyles from '@material-ui/core/es/styles/createStyles';
+import withStyles, { WithStyles } from '@material-ui/core/es/styles/withStyles';
 import Typography from '@material-ui/core/es/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import { memoize } from '@typed/functions';
@@ -19,22 +17,15 @@ import LoginService from '../../services/LoginService';
 import GoogleSignIn from '../components/GoogleSignIn';
 
 type IProps = RouteComponentProps<{}> &
-  WithStyles<
-    | 'root'
-    | 'containerGrid'
-    | 'titleText'
-    | 'loginBox'
-    | 'textField'
-    | 'closeSnackbar'
-  > &
+  WithStyles<typeof styles> &
   WithApolloClient<any>;
 
 interface IState {
   snackbarOpen: boolean;
 }
 
-const styles = (theme: Theme) => {
-  const myStyle: StyleRules = {
+const styles = (theme: Theme) =>
+  createStyles({
     root: {
       width: '100%',
       height: '100vh',
@@ -60,10 +51,7 @@ const styles = (theme: Theme) => {
       width: theme.spacing.unit * 4,
       height: theme.spacing.unit * 4,
     },
-  };
-
-  return myStyle;
-};
+  });
 
 class Landing extends React.Component<IProps, IState> {
   private doLogin = memoize(async (signinUser: any, googleUser?: any) => {

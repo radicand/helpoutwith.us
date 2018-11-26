@@ -10,6 +10,7 @@ import InputLabel from '@material-ui/core/es/InputLabel';
 import MenuItem from '@material-ui/core/es/MenuItem';
 import Select from '@material-ui/core/es/Select';
 import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
+import createStyles from '@material-ui/core/es/styles/createStyles';
 import withStyles, { WithStyles } from '@material-ui/core/es/styles/withStyles';
 import TextField from '@material-ui/core/es/TextField';
 import withMobileDialog from '@material-ui/core/es/withMobileDialog';
@@ -22,16 +23,17 @@ import {
 } from '../../queries';
 import LoadingComponent from '../components/LoadingComponent';
 
-const styles = (theme: Theme) => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap' as 'wrap',
-  },
-  formControl: {
-    margin: theme.spacing.unit,
-    minWidth: 200,
-  },
-});
+const styles = (theme: Theme) =>
+  createStyles({
+    container: {
+      display: 'flex',
+      flexWrap: 'wrap' as 'wrap',
+    },
+    formControl: {
+      margin: theme.spacing.unit,
+      minWidth: 200,
+    },
+  });
 
 interface IState {
   id?: string;
@@ -55,7 +57,7 @@ export interface IOProps {
   };
 }
 
-export type IProps = IOProps & WithStyles<'container' | 'formControl'>;
+export type IProps = IOProps & WithStyles<typeof styles>;
 
 class ActivityModal extends React.Component<IProps, IState> {
   constructor(props: IProps) {

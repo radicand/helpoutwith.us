@@ -4,10 +4,8 @@ import ExpansionPanelDetails from '@material-ui/core/es/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/es/ExpansionPanelSummary';
 import Grid from '@material-ui/core/es/Grid';
 import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
-import withStyles, {
-  StyleRules,
-  WithStyles,
-} from '@material-ui/core/es/styles/withStyles';
+import createStyles from '@material-ui/core/es/styles/createStyles';
+import withStyles, { WithStyles } from '@material-ui/core/es/styles/withStyles';
 import Typography from '@material-ui/core/es/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -15,7 +13,6 @@ import EditIcon from '@material-ui/icons/Edit';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import * as React from 'react';
-import { compose } from 'react-apollo';
 import { Helmet } from 'react-helmet';
 import { SITE_TITLE } from '../../constants/System';
 import { MyDataQuery } from '../../queries';
@@ -30,9 +27,7 @@ import LoadingComponent from '../components/LoadingComponent';
 import ActivityModal from '../modals/ActivityModal';
 import ActivityUserRoleModal from '../modals/ActivityUserRoleModal';
 
-type IProps = WithStyles<
-  'root' | 'paper' | 'table' | 'addButton' | 'expansionHeading'
->;
+type IProps = WithStyles<typeof styles>;
 
 interface IState {
   modalActOpen: boolean;
@@ -44,8 +39,8 @@ interface IState {
 type Organization = myData['allOrganizations'][0];
 type OrgActivity = myData['allOrganizations'][0]['activities'][0];
 
-const styles = (theme: Theme) => {
-  const myStyle: StyleRules = {
+const styles = (theme: Theme) =>
+  createStyles({
     root: {
       flexGrow: 1,
       marginTop: 30,
@@ -68,12 +63,9 @@ const styles = (theme: Theme) => {
       fontSize: theme.typography.pxToRem(15),
       fontWeight: theme.typography.fontWeightRegular,
     },
-  };
+  });
 
-  return myStyle;
-};
-
-class ActivityList extends React.Component<IProps, IState> {
+class ActivityList extends React.PureComponent<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 
@@ -312,4 +304,4 @@ class ActivityList extends React.Component<IProps, IState> {
   };
 }
 
-export default compose(withStyles(styles, { withTheme: true }))(ActivityList);
+export default withStyles(styles, { withTheme: true })(ActivityList);

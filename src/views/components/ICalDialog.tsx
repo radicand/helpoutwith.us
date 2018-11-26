@@ -16,7 +16,7 @@ interface IState {
   url?: string;
 }
 
-class ICalDialog extends React.Component<IProps, IState> {
+class ICalDialog extends React.PureComponent<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 

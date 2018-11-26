@@ -10,6 +10,7 @@ import InputLabel from '@material-ui/core/es/InputLabel';
 import MenuItem from '@material-ui/core/es/MenuItem';
 import Select from '@material-ui/core/es/Select';
 import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
+import createStyles from '@material-ui/core/es/styles/createStyles';
 import withStyles, { WithStyles } from '@material-ui/core/es/styles/withStyles';
 import TextField from '@material-ui/core/es/TextField';
 import withMobileDialog from '@material-ui/core/es/withMobileDialog';
@@ -20,17 +21,18 @@ import { myData, Role } from '../../queries/schema';
 
 type Organization = myData['allOrganizations'][0];
 
-const styles = (theme: Theme) => ({
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: 200,
-  },
-  formControl: {
-    margin: theme.spacing.unit,
-    minWidth: 200,
-  },
-});
+const styles = (theme: Theme) =>
+  createStyles({
+    textField: {
+      marginLeft: theme.spacing.unit,
+      marginRight: theme.spacing.unit,
+      width: 200,
+    },
+    formControl: {
+      margin: theme.spacing.unit,
+      minWidth: 200,
+    },
+  });
 
 export interface IState {}
 
@@ -48,7 +50,7 @@ interface IOProps {
   org: Organization;
 }
 
-type IIProps = WithStyles<'textField' | 'formControl'>;
+type IIProps = WithStyles<typeof styles>;
 
 export type IProps = IOProps & IIProps;
 

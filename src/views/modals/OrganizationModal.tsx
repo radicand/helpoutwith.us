@@ -5,6 +5,7 @@ import DialogContent from '@material-ui/core/es/DialogContent';
 import DialogContentText from '@material-ui/core/es/DialogContentText';
 import DialogTitle from '@material-ui/core/es/DialogTitle';
 import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
+import createStyles from '@material-ui/core/es/styles/createStyles';
 import withStyles, { WithStyles } from '@material-ui/core/es/styles/withStyles';
 import TextField from '@material-ui/core/es/TextField';
 import withMobileDialog from '@material-ui/core/es/withMobileDialog';
@@ -33,15 +34,16 @@ interface IOProps {
   org?: IOrgState;
 }
 
-const styles = (theme: Theme) => ({
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: 200,
-  },
-});
+const styles = (theme: Theme) =>
+  createStyles({
+    textField: {
+      marginLeft: theme.spacing.unit,
+      marginRight: theme.spacing.unit,
+      width: 200,
+    },
+  });
 
-type IIProps = WithStyles<'textField'>;
+type IIProps = WithStyles<typeof styles>;
 
 export type IProps = IOProps & IIProps;
 

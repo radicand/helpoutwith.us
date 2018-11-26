@@ -9,7 +9,8 @@ import Chip from '@material-ui/core/es/Chip';
 import IconButton from '@material-ui/core/es/IconButton';
 import Paper from '@material-ui/core/es/Paper';
 import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
-import withStyles, { StyleRules } from '@material-ui/core/es/styles/withStyles';
+import createStyles from '@material-ui/core/es/styles/createStyles';
+import withStyles, { WithStyles } from '@material-ui/core/es/styles/withStyles';
 import Typography from '@material-ui/core/es/Typography';
 import classnamer from 'classnamer';
 import * as React from 'react';
@@ -17,7 +18,7 @@ import { Member } from '../../../queries/actions';
 import { Role } from '../../../queries/schema';
 import { getInitials } from '../../../utils';
 
-export interface IMediaCardProps {
+export interface IMediaCardProps extends WithStyles<typeof styles> {
   className?: any;
   imageLink?: string;
   imageTitle?: string;
@@ -44,8 +45,8 @@ export interface IMediaCardProps {
   ) => void;
 }
 
-const decorate = withStyles((theme: Theme) => {
-  const myStyles: StyleRules = {
+const styles = (theme: Theme) =>
+  createStyles({
     card: {
       minWidth: 250,
       maxWidth: 300,
@@ -83,12 +84,9 @@ const decorate = withStyles((theme: Theme) => {
       marginBottom: 16,
       fontSize: 14,
     },
-  };
+  });
 
-  return myStyles;
-});
-
-const MediaCard = decorate<IMediaCardProps>(
+const MediaCard = withStyles(styles, { withTheme: true })(
   ({
     className,
     classes,
@@ -105,7 +103,7 @@ const MediaCard = decorate<IMediaCardProps>(
     members,
     absentMembers,
     memberDeleteCallback,
-  }) => (
+  }: IMediaCardProps) => (
     <div>
       <Card className={classnamer(classes.card, className)}>
         {title && <CardHeader title={title} subheader={subheader} />}
@@ -154,40 +152,39 @@ const MediaCard = decorate<IMediaCardProps>(
                   className={classes.chip}
                 />
               ))}
-              {absentMembers &&
-                absentMembers.length > 0 && (
-                  <Paper className={classes.absent}>
-                    <Typography variant="subtitle1">Not Available</Typography>
-                    {absentMembers.map((member: any) => (
-                      <Chip
-                        key={member.id}
-                        color={
-                          member.role === Role.Admin ? 'primary' : 'secondary'
-                        }
-                        avatar={
-                          <Avatar
-                            key={member.id}
-                            aria-label={member.user.name}
-                            title={member.user.name}
-                            alt={getInitials(member.user.name)}
-                            src={member.user.photoLink}
-                            className={classes.avatar}
-                          >
-                            {!member.user.photoLink &&
-                              getInitials(member.user.name)}
-                          </Avatar>
-                        }
-                        label={member.user.name}
-                        onDelete={
-                          memberDeleteCallback
-                            ? memberDeleteCallback.bind({}, member)
-                            : void 0
-                        }
-                        className={classes.chip}
-                      />
-                    ))}
-                  </Paper>
-                )}
+              {absentMembers && absentMembers.length > 0 && (
+                <Paper className={classes.absent}>
+                  <Typography variant="subtitle1">Not Available</Typography>
+                  {absentMembers.map((member: any) => (
+                    <Chip
+                      key={member.id}
+                      color={
+                        member.role === Role.Admin ? 'primary' : 'secondary'
+                      }
+                      avatar={
+                        <Avatar
+                          key={member.id}
+                          aria-label={member.user.name}
+                          title={member.user.name}
+                          alt={getInitials(member.user.name)}
+                          src={member.user.photoLink}
+                          className={classes.avatar}
+                        >
+                          {!member.user.photoLink &&
+                            getInitials(member.user.name)}
+                        </Avatar>
+                      }
+                      label={member.user.name}
+                      onDelete={
+                        memberDeleteCallback
+                          ? memberDeleteCallback.bind({}, member)
+                          : void 0
+                      }
+                      className={classes.chip}
+                    />
+                  ))}
+                </Paper>
+              )}
             </div>
           )}
         </CardContent>

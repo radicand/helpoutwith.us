@@ -16,6 +16,7 @@ import InputLabel from '@material-ui/core/es/InputLabel';
 import MenuItem from '@material-ui/core/es/MenuItem';
 import Select from '@material-ui/core/es/Select';
 import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
+import createStyles from '@material-ui/core/es/styles/createStyles';
 import withStyles, { WithStyles } from '@material-ui/core/es/styles/withStyles';
 import Switch from '@material-ui/core/es/Switch';
 import TextField from '@material-ui/core/es/TextField';
@@ -29,24 +30,25 @@ import {
 } from 'material-ui-pickers';
 import * as React from 'react';
 import { compose } from 'react-apollo';
-import { ReactCookieProps, withCookies } from 'react-cookie';
 import {
   CreateSpotMutation,
   MyDataQuery,
   UpdateSpotMutation,
 } from '../../queries';
+import LoginService from '../../services/LoginService';
 import LoadingComponent from '../components/LoadingComponent';
 
-const styles = (theme: Theme) => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap' as 'wrap',
-  },
-  formControl: {
-    margin: theme.spacing.unit,
-    minWidth: 200,
-  },
-});
+const styles = (theme: Theme) =>
+  createStyles({
+    container: {
+      display: 'flex',
+      flexWrap: 'wrap' as 'wrap',
+    },
+    formControl: {
+      margin: theme.spacing.unit,
+      minWidth: 200,
+    },
+  });
 
 interface IState {
   id?: string;
@@ -85,7 +87,7 @@ export interface IOProps {
   };
 }
 
-type IIProps = WithStyles<'container' | 'formControl'> & ReactCookieProps;
+type IIProps = WithStyles<typeof styles>;
 
 export type IProps = IOProps & IIProps;
 
@@ -176,7 +178,7 @@ class SpotModal extends React.Component<IProps, IState> {
                                       activity.members.filter(
                                         (member) =>
                                           member.user.id ===
-                                            this.props.cookies.get('id') &&
+                                            LoginService.getLoginState().id &&
                                           member.role === 'Admin',
                                       ).length !== 0,
                                   )
@@ -551,7 +553,6 @@ class SpotModal extends React.Component<IProps, IState> {
 }
 
 export default compose(
-  withCookies,
   withStyles(styles, { withTheme: true }),
   withMobileDialog<IProps>(),
 )(SpotModal);

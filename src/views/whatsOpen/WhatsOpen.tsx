@@ -3,15 +3,11 @@ import List from '@material-ui/core/es/List';
 import ListItem from '@material-ui/core/es/ListItem';
 import ListItemText from '@material-ui/core/es/ListItemText';
 import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
-import withStyles, {
-  StyleRules,
-  WithStyles,
-} from '@material-ui/core/es/styles/withStyles';
+import createStyles from '@material-ui/core/es/styles/createStyles';
+import withStyles, { WithStyles } from '@material-ui/core/es/styles/withStyles';
 import Typography from '@material-ui/core/es/Typography';
 import * as luxon from 'luxon';
 import * as React from 'react';
-import { compose } from 'react-apollo';
-import { ReactCookieProps, withCookies } from 'react-cookie';
 import { Helmet } from 'react-helmet';
 import { RouteComponentProps } from 'react-router-dom';
 import { SITE_TITLE } from '../../constants/System';
@@ -22,14 +18,9 @@ import {
   SignupForSpotCombo,
 } from '../../queries/actions';
 import { myData, SpotStatus } from '../../queries/schema';
+import LoginService from '../../services/LoginService';
 import MediaCard from '../components/cards/MediaCard';
 import LoadingComponent from '../components/LoadingComponent';
-
-interface IState {}
-
-type IProps = WithStyles<'root' | 'paper' | 'table' | 'grid' | 'notAvailable'> &
-  RouteComponentProps<{}> &
-  ReactCookieProps;
 
 type OrgActivitySpot = myData['allOrganizations'][0]['activities'][0]['spots'][0];
 type OrgActivity = myData['allOrganizations'][0]['activities'][0];
@@ -42,8 +33,8 @@ type ModfifiedSpot = OrgActivitySpot & {
   _act: OrgActivity;
 };
 
-const styles = (theme: Theme) => {
-  const myStyle: StyleRules = {
+const styles = (theme: Theme) =>
+  createStyles({
     root: {
       flexGrow: 1,
       marginTop: 30,
@@ -64,10 +55,10 @@ const styles = (theme: Theme) => {
     notAvailable: {
       backgroundColor: 'rgba(255,0,0,.075)',
     },
-  };
+  });
 
-  return myStyle;
-};
+interface IState {}
+type IProps = WithStyles<typeof styles> & RouteComponentProps<{}>;
 
 class WhatsOpen extends React.Component<IProps, IState> {
   public render() {
@@ -76,7 +67,7 @@ class WhatsOpen extends React.Component<IProps, IState> {
 
     const _getSpotUser = (spot: OrgActivitySpot) => {
       return spot.members.find((member) => {
-        return member.user.id === this.props.cookies.get('id');
+        return member.user.id === LoginService.getLoginState().id;
       });
     };
 
@@ -212,9 +203,9 @@ class WhatsOpen extends React.Component<IProps, IState> {
                                     luxon.DateTime.fromISO(spot.startsAt)
                                       .setZone(spot._org.timezone)
                                       .toFormat('DD') ===
-                                    luxon.DateTime.fromISO(spot.endsAt)
-                                      .setZone(spot._org.timezone)
-                                      .toFormat('DD')
+                                      luxon.DateTime.fromISO(spot.endsAt)
+                                        .setZone(spot._org.timezone)
+                                        .toFormat('DD')
                                       ? luxon.DateTime.TIME_SIMPLE
                                       : FRIENDLY_DATE_FORMAT_WITH_DAYNAME,
                                   )}`}
@@ -280,7 +271,4 @@ class WhatsOpen extends React.Component<IProps, IState> {
   }
 }
 
-export default compose(
-  withCookies,
-  withStyles(styles, { withTheme: true }),
-)(WhatsOpen);
+export default withStyles(styles, { withTheme: true })(WhatsOpen);
