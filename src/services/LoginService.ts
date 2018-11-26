@@ -1,4 +1,7 @@
+import { Cookies as ck } from 'react-cookie';
 import Cookies from 'universal-cookie';
+
+let COOKIE_REF: ck = null;
 
 const cookieOpts = {
   secure: false, // setting true won't allow us to read the cookie for user id
@@ -7,23 +10,26 @@ const cookieOpts = {
 };
 
 export function login(variables: { token: string; id: string }) {
-  const cookies = new Cookies();
-  cookies.set('token', variables.token, cookieOpts);
-  cookies.set('id', variables.id, cookieOpts);
+  COOKIE_REF = new Cookies();
+  COOKIE_REF.set('token', variables.token, cookieOpts);
+  COOKIE_REF.set('id', variables.id, cookieOpts);
 }
 
 export function logout() {
-  const cookies = new Cookies();
-  cookies.remove('token', cookieOpts);
-  cookies.remove('id', cookieOpts);
+  COOKIE_REF = new Cookies();
+  COOKIE_REF.remove('token', cookieOpts);
+  COOKIE_REF.remove('id', cookieOpts);
+  COOKIE_REF = null;
 }
 
 export function getLoginState() {
-  const cookies = new Cookies();
+  if (!COOKIE_REF) {
+    COOKIE_REF = new Cookies();
+  }
 
   return {
-    token: cookies.get('token'),
-    id: cookies.get('id'),
+    token: COOKIE_REF.get('token'),
+    id: COOKIE_REF.get('id'),
   };
 }
 
