@@ -36,13 +36,15 @@ import UpdateSpotUserRoleGQL from './updateSpotUserRole.graphql';
 const wrappedQuery = <P extends any, V = OperationVariables>(
   query: DocumentNode,
   variables?: V,
-  fetchPolicy?: QueryProps['fetchPolicy'],
+  opts: {
+    fetchPolicy?: QueryProps['fetchPolicy'];
+  } = {},
 ) => {
   type QPO = QueryProps<P, V>;
 
   type WrappedProps = Pick<QPO, Exclude<keyof QPO, 'query'>>;
 
-  return class WrappedQuery extends React.Component<WrappedProps> {
+  return class WrappedQuery extends React.PureComponent<WrappedProps> {
     public render() {
       class UnwrappedComponent extends Query<P, V> {}
 
@@ -50,7 +52,7 @@ const wrappedQuery = <P extends any, V = OperationVariables>(
         <UnwrappedComponent
           query={query}
           variables={variables}
-          fetchPolicy={fetchPolicy}
+          {...opts}
           {...this.props}
         />
       );
@@ -75,7 +77,7 @@ const wrappedMutation = <P extends any, V = OperationVariables>(
 
   type WrappedProps = Pick<MPO, Exclude<keyof MPO, 'mutation'>>;
 
-  return class WrappedMutation extends React.Component<
+  return class WrappedMutation extends React.PureComponent<
     WrappedProps,
     MutationState<P>
   > {
@@ -118,7 +120,7 @@ export const MyDataQuery = wrappedQuery<schema.myData, schema.myDataVariables>(
   },
 );
 export const LoggedInUserQuery = wrappedQuery<schema.loggedInUser>(
-  LoggedInUserGQL /* , {}, 'network-only' */,
+  LoggedInUserGQL /* , {}, {fetchPolicy: 'network-only'} */,
 ); // enabling network-only forces a refectch everytime layout is re-rendered (e.g., on menu expansion)
 
 export const CreateOrganizationUserRoleMutation = wrappedMutation<

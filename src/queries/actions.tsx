@@ -44,7 +44,7 @@ export interface IMemberProps {
   children: (param: { [key: string]: (member: Member) => {} }) => {};
 }
 
-export class SignupForSpotCombo extends React.Component<ISpotProps, {}> {
+export class SignupForSpotCombo extends React.PureComponent<ISpotProps, {}> {
   public render() {
     return (
       <CreateSpotUserRoleMutation>
@@ -85,7 +85,7 @@ export class SignupForSpotCombo extends React.Component<ISpotProps, {}> {
   }
 }
 
-export class MarkUnavailableForSpotCombo extends React.Component<
+export class MarkUnavailableForSpotCombo extends React.PureComponent<
   ISpotProps,
   {}
 > {
@@ -128,7 +128,10 @@ export class MarkUnavailableForSpotCombo extends React.Component<
 }
 
 // XXX Extend me more
-export class AdminSpotActionsCombo extends React.Component<IMemberProps, {}> {
+export class AdminSpotActionsCombo extends React.PureComponent<
+  IMemberProps,
+  {}
+> {
   public render() {
     return (
       <DeleteOrganizationUserRoleMutation>
@@ -188,7 +191,7 @@ export class AdminSpotActionsCombo extends React.Component<IMemberProps, {}> {
   }
 }
 
-export class CancelSpotSignupCombo extends React.Component<ISpotProps, {}> {
+export class CancelSpotSignupCombo extends React.PureComponent<ISpotProps, {}> {
   public render() {
     return (
       <UpdateSpotUserRoleMutation>
@@ -217,7 +220,7 @@ export class CancelSpotSignupCombo extends React.Component<ISpotProps, {}> {
   }
 }
 
-export class DeleteSpotCombo extends React.Component<ISpotProps, {}> {
+export class DeleteSpotCombo extends React.PureComponent<ISpotProps, {}> {
   public render() {
     return (
       <DeleteSpotMutation>
@@ -254,7 +257,10 @@ export class DeleteSpotCombo extends React.Component<ISpotProps, {}> {
 export interface IActivityProps {
   children: (param: (activity: OrgActivity) => {}) => {};
 }
-export class DeleteActivityCombo extends React.Component<IActivityProps, {}> {
+export class DeleteActivityCombo extends React.PureComponent<
+  IActivityProps,
+  {}
+> {
   public render() {
     return (
       <DeleteActivityMutation>
@@ -315,7 +321,7 @@ export class DeleteActivityCombo extends React.Component<IActivityProps, {}> {
 export interface IOrganizationProps {
   children: (param: (org: Organization) => {}) => {};
 }
-export class DeleteOrganizationCombo extends React.Component<
+export class DeleteOrganizationCombo extends React.PureComponent<
   IOrganizationProps,
   {}
 > {
