@@ -1,7 +1,6 @@
-import { Cookies as ck } from 'react-cookie';
 import Cookies from 'universal-cookie';
 
-let COOKIE_REF: ck = null;
+let COOKIE_REF: Cookies = null;
 
 const cookieOpts = {
   secure: false, // setting true won't allow us to read the cookie for user id
@@ -22,8 +21,10 @@ export function logout() {
   COOKIE_REF = null;
 }
 
-export function getLoginState() {
-  if (!COOKIE_REF) {
+export function getLoginState(
+  opts: { newCookie?: boolean } = { newCookie: false },
+) {
+  if (!COOKIE_REF || opts.newCookie) {
     COOKIE_REF = new Cookies();
   }
 

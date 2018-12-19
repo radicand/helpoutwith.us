@@ -1,4 +1,4 @@
-import Button from '@material-ui/core/es/Button';
+import Fab from '@material-ui/core/es/Fab';
 import Grid from '@material-ui/core/es/Grid';
 import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
 import createStyles from '@material-ui/core/es/styles/createStyles';
@@ -172,15 +172,14 @@ class OrganizationList extends React.Component<IProps, IState> {
             </AdminSpotActionsCombo>
           </Grid>
         </div>
-        <Button
+        <Fab
           onClick={this._onClickFormModal}
-          variant="fab"
           color="secondary"
           aria-label="add"
           className={classes.addButton}
         >
           <AddIcon />
-        </Button>
+        </Fab>
         {this.state.modalOrgOpen && (
           <OrganizationModal
             org={this.state.modalOrg}

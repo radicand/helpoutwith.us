@@ -1,7 +1,7 @@
-import Button from '@material-ui/core/es/Button';
 import ExpansionPanel from '@material-ui/core/es/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/es/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/es/ExpansionPanelSummary';
+import Fab from '@material-ui/core/es/Fab';
 import Grid from '@material-ui/core/es/Grid';
 import { Theme } from '@material-ui/core/es/styles/createMuiTheme';
 import createStyles from '@material-ui/core/es/styles/createStyles';
@@ -220,15 +220,14 @@ class ActivityList extends React.PureComponent<IProps, IState> {
                     }
                   </AdminSpotActionsCombo>
                   {isOrgAdmin && (
-                    <Button
+                    <Fab
                       onClick={this._onClickFormModal}
-                      variant="fab"
                       color="secondary"
                       aria-label="add"
                       className={classes.addButton}
                     >
                       <AddIcon />
-                    </Button>
+                    </Fab>
                   )}
                 </React.Fragment>
               );

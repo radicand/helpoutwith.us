@@ -1,7 +1,7 @@
-import Button from '@material-ui/core/es/Button';
 import ExpansionPanel from '@material-ui/core/es/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/es/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/es/ExpansionPanelSummary';
+import Fab from '@material-ui/core/es/Fab';
 import FormControlLabel from '@material-ui/core/es/FormControlLabel';
 import Grid from '@material-ui/core/es/Grid';
 import List from '@material-ui/core/es/List';
@@ -452,15 +452,14 @@ class SpotList extends React.Component<IProps, IState> {
                     )}
                   </AdminSpotActionsCombo>
                   {isActivityAdmin && (
-                    <Button
+                    <Fab
                       onClick={this._onClickFormAddModal}
-                      variant="fab"
                       color="secondary"
                       aria-label="add"
                       className={classes.addButton}
                     >
                       <AddIcon />
-                    </Button>
+                    </Fab>
                   )}
                 </React.Fragment>
               );

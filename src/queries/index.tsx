@@ -37,6 +37,7 @@ const wrappedQuery = <P extends any, V = OperationVariables>(
   query: DocumentNode,
   variables?: V,
   opts: {
+    replaceUserId?: boolean;
     fetchPolicy?: QueryProps['fetchPolicy'];
   } = {},
 ) => {
@@ -47,6 +48,10 @@ const wrappedQuery = <P extends any, V = OperationVariables>(
   return class WrappedQuery extends React.PureComponent<WrappedProps> {
     public render() {
       class UnwrappedComponent extends Query<P, V> {}
+
+      if (opts.replaceUserId && variables && (variables as any).user_id) {
+        (variables as any).user_id = LoginService.getLoginState().id;
+      }
 
       return (
         <UnwrappedComponent
@@ -118,7 +123,11 @@ export const MyDataQuery = wrappedQuery<schema.myData, schema.myDataVariables>(
   {
     user_id: LoginService.getLoginState().id,
   },
+  {
+    replaceUserId: true,
+  },
 );
+
 export const LoggedInUserQuery = wrappedQuery<schema.loggedInUser>(
   LoggedInUserGQL /* , {}, {fetchPolicy: 'network-only'} */,
 ); // enabling network-only forces a refectch everytime layout is re-rendered (e.g., on menu expansion)

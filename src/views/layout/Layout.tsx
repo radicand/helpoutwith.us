@@ -102,9 +102,6 @@ const styles = (theme: Theme) =>
     },
     drawerPaperClose: {
       width: theme.spacing.unit * 7,
-      [theme.breakpoints.up('sm')]: {
-        width: theme.spacing.unit * 9,
-      },
       overflowX: 'hidden',
       transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
@@ -147,6 +144,8 @@ const styles = (theme: Theme) =>
         width: theme.spacing.unit * 4,
         height: theme.spacing.unit * 4,
       },
+      width: 25,
+      height: 25,
     },
     bigAvatar: {
       width: 60,

@@ -118,10 +118,12 @@ class SpotModal extends React.Component<IProps, IState> {
           timezone: 'America/Chicago',
         },
         numberNeeded: '1',
-        startsAt: luxon.DateTime.local().startOf('hour'),
-        endsAt: luxon.DateTime.local()
+        startsAt: luxon.DateTime.local()
           .startOf('hour')
           .plus({ hours: 1 }),
+        endsAt: luxon.DateTime.local()
+          .startOf('hour')
+          .plus({ hours: 2 }),
         repeat: '',
         repeatUntil: luxon.DateTime.local().plus({ days: 1 }),
         repeatSunday: '',
