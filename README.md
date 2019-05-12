@@ -1,3 +1,5 @@
+Please note, this project is no longer being maintainer, but feel free to fork it if you are interested in picking it up.
+
 # helpoutwith.us
 
 A modern webapp to help manage signups and volunteering for groups and organizations. Featuring:
